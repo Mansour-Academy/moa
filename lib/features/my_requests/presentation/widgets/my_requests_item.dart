@@ -31,35 +31,65 @@ class MyRequestsItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Container(
+            //   color: HexColor(liteGreyColor),
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: Row(
+            //       children: [
+            //         Text(
+            //           appTranslation(context).myRequests,
+            //           style: Theme.of(context).textTheme.bodyText2!.copyWith(
+            //                 color: blackColor,
+            //               ),
+            //         ),
+            //         // const Spacer(),
+            //         // AppTextButton(
+            //         //   label: appTranslation(context).view,
+            //         //   onPress: (){
+            //         //     navigateTo(
+            //         //       context,
+            //         //       ProductDetailsPage(
+            //         //         slug: model.product.slug.en,
+            //         //       ),
+            //         //     );
+            //         //   },
+            //         //   style: Theme.of(context).textTheme.subtitle1!,
+            //         //   buttonStyle: TextButton.styleFrom(
+            //         //     padding: EdgeInsets.zero,
+            //         //     alignment: AlignmentDirectional.centerEnd,
+            //         //   ),
+            //         // ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // myDivider(context),
             Container(
               color: HexColor(liteGreyColor),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    Text(
-                      appTranslation(context).myRequests,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            color: blackColor,
-                          ),
+                    Expanded(
+                      child: Text(
+                        appTranslation(context).orderNumber,
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
                     ),
-                    // const Spacer(),
-                    // AppTextButton(
-                    //   label: appTranslation(context).view,
-                    //   onPress: (){
-                    //     navigateTo(
-                    //       context,
-                    //       ProductDetailsPage(
-                    //         slug: model.product.slug.en,
-                    //       ),
-                    //     );
-                    //   },
-                    //   style: Theme.of(context).textTheme.subtitle1!,
-                    //   buttonStyle: TextButton.styleFrom(
-                    //     padding: EdgeInsets.zero,
-                    //     alignment: AlignmentDirectional.centerEnd,
-                    //   ),
-                    // ),
+                    Expanded(
+                      flex: 2,
+                      child: Text(
+                        model.corrNumber.isNotEmpty?  model.corrNumber : appTranslation(context).noDataFound,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                              color: HexColor(darkGreyColor),
+                          fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -71,33 +101,8 @@ class MyRequestsItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      appTranslation(context).orderNumber,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      model.corrNumber,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                            color: HexColor(darkGreyColor),
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            myDivider(context),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
                       appTranslation(context).requestType,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -109,9 +114,15 @@ class MyRequestsItem extends StatelessWidget {
                         en: model.corrCategoryTypeNavigation.ename,
                         ar: model.corrCategoryTypeNavigation.aname,
                         context: context,
-                      ),
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      ).isNotEmpty ? getTranslatedText(
+                        en: model.corrCategoryTypeNavigation.ename,
+                        ar: model.corrCategoryTypeNavigation.aname,
+                        context: context,
+                      ): appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                        fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
@@ -126,7 +137,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       appTranslation(context).submissionDate,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -134,9 +145,11 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.corrDeliveryDate,
-                      style: Theme.of(context).textTheme.caption!.copyWith(
+                      model.corrDeliveryDate.isNotEmpty? model.corrDeliveryDate : appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                            fontWeight: FontWeight.w400
                           ),
                     ),
                   ),
@@ -151,7 +164,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       appTranslation(context).orderStatus,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -159,9 +172,11 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.reqStatusNavigation.description,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      model.reqStatusNavigation.description.isNotEmpty? model.reqStatusNavigation.description :  appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                        fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
@@ -169,6 +184,7 @@ class MyRequestsItem extends StatelessWidget {
               ),
             ),
             myDivider(context),
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -176,7 +192,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       appTranslation(context).departmentName,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -184,9 +200,19 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      'no_information_available',
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      getTranslatedText(
+                        en: model.corrCategoryTypeNavigation.categoryParent!.ename,
+                        ar:  model.corrCategoryTypeNavigation.categoryParent!.aname,
+                        context: context,
+                      ).isNotEmpty ? getTranslatedText(
+                        en: model.corrCategoryTypeNavigation.categoryParent!.ename,
+                        ar:  model.corrCategoryTypeNavigation.categoryParent!.aname,
+                        context: context,
+                      ) : appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                        fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
@@ -201,7 +227,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       appTranslation(context).responseDate,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -209,9 +235,11 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.requestReplyDate,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      model.requestReplyDate.isNotEmpty? model.requestReplyDate : appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                        fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
@@ -226,7 +254,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       appTranslation(context).attendanceDate,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -234,9 +262,11 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.citizenReplyDetailsNavigation.attendenceDate,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      model.citizenReplyDetailsNavigation != null? model.citizenReplyDetailsNavigation!.attendenceDate : appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                        fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
@@ -251,7 +281,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     child: Text(
                       appTranslation(context).comments,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
@@ -259,29 +289,30 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.citizenReplyDetailsNavigation.attendenceDate,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      model.citizenReplyDetailsNavigation != null ? model.citizenReplyDetailsNavigation!.attendenceDate :  appTranslation(context).noDataFound,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
+                        fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
                 ],
               ),
             ),
-            myDivider(context),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 38.0,
-                child: MyButton(
-                  isLoading: false,
-                  onPressed: () {
-                    AppCubit.get(context).userLogin();
-                  },
-                  text: "طباعة",
-                ),
-              ),
-            ),
+            // myDivider(context),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: SizedBox(
+            //     height: 38.0,
+            //     child: MyButton(
+            //       isLoading: false,
+            //       onPressed: () {
+            //       },
+            //       text: appTranslation(context).print,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

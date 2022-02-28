@@ -29,5 +29,6 @@
   "responseDate": "تاريخ الرد",
   "attendanceDate": "موعد الحضور",
   "comments": "تعليقات",
-  "print": "طباعة"
+  "print": "طباعة",
+  "noDataFound": "لا يوجد معلومات"
 }
