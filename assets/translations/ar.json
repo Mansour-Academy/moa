@@ -1,0 +1,22 @@
+{
+  "loginHead": "تسجيل الدخول",
+  "emailAddress": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "emailAddressError": "من فضلك أدخل البريد الإلكتروني الخاص بك",
+  "passwordError": "من فضلك أدخل كلمة المرور الخاصة بحسابك",
+  "donNotHaveAccount": "ليس لديك حساب؟",
+  "registerNow": "سجل حساب الآن",
+  "registerHead": "تسجيل مستخدم جديد",
+  "fullName": "الاسم بالكامل",
+  "nationalId": "الرقم القومى",
+  "government": "المحافظه",
+  "mobileNumber": "رقم الموبايل",
+  "address": "العنوان",
+  "confirmPassword": "تأكيد كلمة المرور",
+
+  "fullNameError": "من فضلك أدخل اسمك بالكامل",
+  "nationalIdError": "من فضلك أدخل رقمك القومى",
+  "mobileNumberError": "من فضلك أدخل رقم الموبايل الخاص بك ",
+  "addressError": "من فضلك أدخل عنوانك",
+  "confirmPasswordError": "من فضلك أدخل أعد إدخال كلمة المرور للتأكيد"
+}

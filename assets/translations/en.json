@@ -1,0 +1,22 @@
+{
+  "loginHead": "User Login",
+  "emailAddress": "Email Address",
+  "password": "Password",
+  "emailAddressError": "please enter your email address",
+  "passwordError": "please enter your account password",
+  "donNotHaveAccount": "Don't have an account?",
+  "registerNow": "create new account",
+  "registerHead": "Create New Account",
+  "fullName": "Full Name",
+  "nationalId": "National Id",
+  "government": "Government",
+  "mobileNumber": "Mobile Number",
+  "address": "Address",
+  "confirmPassword": "Confirm Password",
+
+  "fullNameError": "please enter your full name",
+  "nationalIdError": "please enter your national id",
+  "mobileNumberError": "please enter your mobile number",
+  "addressError": "please enter your address",
+  "confirmPasswordError": "please re-enter password for confirmation"
+}
