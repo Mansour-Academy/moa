@@ -29,6 +29,8 @@ abstract class Repository {
     required String address,
     required int governorateId,
   });
+
+  Future<Either<String, RegisterModel>> getAllRequested();
 }
 
 class RepoImplementation extends Repository {
@@ -140,6 +142,62 @@ class RepoImplementation extends Repository {
       },
     );
   }
+
+  @override
+  Future<Either<String, RegisterModel>> getAllRequested() async {
+    return _basicErrorHandling<RegisterModel>(
+      onSuccess: () async {
+        final Response f = await dioHelper.get(
+          url: requestUrl,
+          token: token
+        );
+
+        return RegisterModel.fromJson(f.data);
+      },
+      onServerError: (exception) async {
+        debugPrint(exception.message);
+        debugPrint(exception.code.toString());
+        debugPrint(exception.error);
+        // final f = exception.error;
+        // final msg = _handleErrorMessages(f: f['message'],);
+        return exception.message;
+      },
+    );
+  }
+
+  // @override
+  // Future<Either<String, List<GovernmentModel>>> getAllRequested() async {
+  //   return _basicErrorHandling<List<GovernmentModel>>(
+  //     onSuccess: () async {
+  //       final Response f = await dioHelper.get(
+  //         url: requestUrl,
+  //         token: token
+  //       );
+  //
+  //       List<GovernmentModel> governmentsList = [
+  //         GovernmentModel(
+  //           id: 0,
+  //           code: '0',
+  //           description: 'اختر',
+  //         ),
+  //       ];
+  //
+  //       f.data.forEach((e) {
+  //         governmentsList.add(GovernmentModel.fromJson(e));
+  //       });
+  //
+  //       return governmentsList;
+  //     },
+  //     onServerError: (exception) async {
+  //       debugPrint(exception.message);
+  //       debugPrint(exception.code.toString());
+  //       debugPrint(exception.error);
+  //       // final f = exception.error;
+  //       // final msg = _handleErrorMessages(f: f['message'],);
+  //       return exception.message;
+  //     },
+  //   );
+  // }
 }
 
 extension on Repository {
