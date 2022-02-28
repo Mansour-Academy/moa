@@ -1,8 +1,10 @@
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/util/translation.dart';
+
 import 'cubit/cubit.dart';
 
 int selectedService = 0;
@@ -23,8 +25,6 @@ const String liteGreyColor = 'F9F8F7';
 const String greenColor = '07B055';
 const String blueColor = '0E72ED';
 
-
-
 const Color whiteColor = Colors.white;
 const Color blackColor = Colors.black;
 
@@ -41,6 +41,17 @@ const Map<int, Color> color = {
   900: Color.fromRGBO(136, 14, 79, 1),
 };
 
+String getTranslatedText({
+  required String en,
+  required String ar,
+  required BuildContext context,
+}) {
+  if (AppCubit.get(context).isRtl) {
+    return ar;
+  }
+  return en;
+}
+
 TranslationModel appTranslation(context) =>
     AppCubit.get(context).translationModel;
 
@@ -53,11 +64,10 @@ void navigateTo(context, widget) => Navigator.push(
       ),
     );
 
-
 Widget myDivider(context) => Divider(
-  height: 0.0,
-  color: HexColor(regularGrey),
-);
+      height: 0.0,
+      color: HexColor(regularGrey),
+    );
 
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
     context,

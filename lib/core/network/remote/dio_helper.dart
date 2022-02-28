@@ -35,7 +35,7 @@ class DioImpl extends DioHelper {
     BaseOptions(
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
-      connectTimeout: 5000,
+      connectTimeout: 10000,
     ),
   );
 

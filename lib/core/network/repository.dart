@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:moa/core/models/login_model.dart';
 import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/network/remote/dio_helper.dart';
+
 import '../error/exceptions.dart';
+import '../models/all_requests_model.dart';
 import '../models/government_model.dart';
 import '../models/register_model.dart';
 import 'local/cache_helper.dart';
@@ -30,7 +32,7 @@ abstract class Repository {
     required int governorateId,
   });
 
-  Future<Either<String, RegisterModel>> getAllRequested();
+  Future<Either<String, List<AllRequestsDataModel>>> getAllRequested();
 }
 
 class RepoImplementation extends Repository {
@@ -144,15 +146,21 @@ class RepoImplementation extends Repository {
   }
 
   @override
-  Future<Either<String, RegisterModel>> getAllRequested() async {
-    return _basicErrorHandling<RegisterModel>(
+  Future<Either<String, List<AllRequestsDataModel>>> getAllRequested() async {
+    return _basicErrorHandling<List<AllRequestsDataModel>>(
       onSuccess: () async {
-        final Response f = await dioHelper.get(
-          url: requestUrl,
-          token: token
-        );
+        final Response f = await dioHelper.get(url: requestUrl, token: token);
 
-        return RegisterModel.fromJson(f.data);
+        List<AllRequestsDataModel> requests = [];
+        f.data.forEach((e){
+          requests.add(AllRequestsDataModel.fromJson(e));
+        });
+
+        // Iterable l = json.decode(f.data);
+        // List<AllRequestsDataModel> requests = List<AllRequestsDataModel>.from(
+        //     l.map((model) => AllRequestsDataModel.fromJson(model)));
+
+        return requests;
       },
       onServerError: (exception) async {
         debugPrint(exception.message);
@@ -165,39 +173,39 @@ class RepoImplementation extends Repository {
     );
   }
 
-  // @override
-  // Future<Either<String, List<GovernmentModel>>> getAllRequested() async {
-  //   return _basicErrorHandling<List<GovernmentModel>>(
-  //     onSuccess: () async {
-  //       final Response f = await dioHelper.get(
-  //         url: requestUrl,
-  //         token: token
-  //       );
-  //
-  //       List<GovernmentModel> governmentsList = [
-  //         GovernmentModel(
-  //           id: 0,
-  //           code: '0',
-  //           description: 'اختر',
-  //         ),
-  //       ];
-  //
-  //       f.data.forEach((e) {
-  //         governmentsList.add(GovernmentModel.fromJson(e));
-  //       });
-  //
-  //       return governmentsList;
-  //     },
-  //     onServerError: (exception) async {
-  //       debugPrint(exception.message);
-  //       debugPrint(exception.code.toString());
-  //       debugPrint(exception.error);
-  //       // final f = exception.error;
-  //       // final msg = _handleErrorMessages(f: f['message'],);
-  //       return exception.message;
-  //     },
-  //   );
-  // }
+// @override
+// Future<Either<String, List<GovernmentModel>>> getAllRequested() async {
+//   return _basicErrorHandling<List<GovernmentModel>>(
+//     onSuccess: () async {
+//       final Response f = await dioHelper.get(
+//         url: requestUrl,
+//         token: token
+//       );
+//
+//       List<GovernmentModel> governmentsList = [
+//         GovernmentModel(
+//           id: 0,
+//           code: '0',
+//           description: 'اختر',
+//         ),
+//       ];
+//
+//       f.data.forEach((e) {
+//         governmentsList.add(GovernmentModel.fromJson(e));
+//       });
+//
+//       return governmentsList;
+//     },
+//     onServerError: (exception) async {
+//       debugPrint(exception.message);
+//       debugPrint(exception.code.toString());
+//       debugPrint(exception.error);
+//       // final f = exception.error;
+//       // final msg = _handleErrorMessages(f: f['message'],);
+//       return exception.message;
+//     },
+//   );
+// }
 }
 
 extension on Repository {

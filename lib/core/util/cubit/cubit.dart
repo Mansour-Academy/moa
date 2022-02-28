@@ -10,8 +10,8 @@ import 'package:moa/core/models/login_model.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/translation.dart';
-import 'package:moa/features/register/presentation/widgets/register_widget.dart';
 
+import '../../models/all_requests_model.dart';
 import '../../models/register_model.dart';
 import '../../network/repository.dart';
 
@@ -243,18 +243,24 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
-  void allRequested() async {
+  List<AllRequestsDataModel> requests = [];
 
+  void myRequests() async {
     emit(AllRequestedLoading());
 
     final result = await _repository.getAllRequested();
 
     result.fold(
       (failure) {
-        emit(AllRequestedError(message: failure,),);
+        debugPrint(failure.toString());
+        emit(
+          AllRequestedError(
+            message: failure,
+          ),
+        );
       },
       (data) {
-        // registerModel = data;
+        requests = data;
 
         emit(AllRequestedSuccess());
       },

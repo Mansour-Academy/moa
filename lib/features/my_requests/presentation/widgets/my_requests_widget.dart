@@ -1,36 +1,41 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/cubit/state.dart';
-import 'package:moa/core/util/widgets/logo.dart';
-import 'package:moa/core/util/widgets/my_button.dart';
-import 'package:moa/core/util/widgets/my_form.dart';
-import 'package:moa/features/register/presentation/pages/register_page.dart';
+import 'package:moa/core/util/widgets/my_indicator.dart';
 
 import '../../../../core/util/constants.dart';
 import 'my_requests_item.dart';
 
-class MyRequestsWidget extends StatelessWidget {
+class MyRequestsWidget extends StatefulWidget {
   const MyRequestsWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyRequestsWidget> createState() => _MyRequestsWidgetState();
+}
+
+class _MyRequestsWidgetState extends State<MyRequestsWidget> {
+  @override
+  void initState() {
+    super.initState();
+    AppCubit.get(context).myRequests();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
+        if(state is AllRequestedLoading) {
+          return const MyIndicator();
+        }
         return ListView.separated(
           physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) =>  const MyRequestsItem(),
+          itemBuilder: (context, index) =>  MyRequestsItem(model: AppCubit.get(context).requests[index],),
           separatorBuilder: (context, index) => space16Vertical(context),
-          itemCount:  10,
+          itemCount: AppCubit.get(context).requests.length,
         );
       },
     );
