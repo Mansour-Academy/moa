@@ -31,7 +31,7 @@ class AllRequestsDataModel {
   late final String requestReplyDate;
   late final String corrDeliveryDate;
   late final CorrCategoryTypeNavigation corrCategoryTypeNavigation;
-  late final CitizenReplyDetailsNavigation citizenReplyDetailsNavigation;
+   CitizenReplyDetailsNavigation? citizenReplyDetailsNavigation;
   late final ReqStatusNavigation reqStatusNavigation;
 
   // late final num corrId;
@@ -107,6 +107,7 @@ class CorrCategoryTypeNavigation {
 
   late final String ename;
   late final String aname;
+   CategoryParent? categoryParent;
 
 // late final num id;
 // late final dynamic code;
@@ -137,6 +138,10 @@ class CorrCategoryTypeNavigation {
   CorrCategoryTypeNavigation.fromJson(Map<String, dynamic> json) {
     ename = json['ename'] ?? '';
     aname = json['aname'] ?? '';
+
+    if(json['categoryParent'] != null){
+      categoryParent = CategoryParent.fromJson(json['categoryParent']);
+    }
   }
 }
 
@@ -167,10 +172,22 @@ class ReqStatusNavigation {
   }
 }
 
-// class TimeModel {
-//   late final bool hasValue;
-// }
-//
+class CategoryParent {
+  CategoryParent({
+    required this.ename,
+    required this.aname,
+  });
+
+  late final String ename;
+  late final String aname;
+
+  CategoryParent.fromJson(Map<String, dynamic> json) {
+    ename = json['ename'] ?? '';
+    aname = json['aname'] ?? '';
+  }
+}
+
+
 // class TimeModelValue {
 // late final num ticks;
 // late final num days;

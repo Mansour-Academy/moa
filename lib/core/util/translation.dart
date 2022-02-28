@@ -31,12 +31,14 @@ class TranslationModel {
   late String attendanceDate;
   late String comments;
   late String print;
+  late String noDataFound;
 
 
 
 
 
   TranslationModel.fromJson(Map<String, dynamic> json) {
+    noDataFound = json['noDataFound'];
     print = json['print'];
     myRequests = json['myRequests'];
     orderNumber = json['orderNumber'];
