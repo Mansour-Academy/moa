@@ -18,5 +18,16 @@
   "nationalIdError": "please enter your national id",
   "mobileNumberError": "please enter your mobile number",
   "addressError": "please enter your address",
-  "confirmPasswordError": "please re-enter password for confirmation"
+  "confirmPasswordError": "please re-enter password for confirmation",
+
+  "myRequests": "My requests",
+  "orderNumber": "order number",
+  "requestType": "request type",
+  "submissionDate": "Submission date",
+  "orderStatus": "Order status",
+  "departmentName": "Department Name",
+  "responseDate": "response date",
+  "attendanceDate": "Attendance date",
+  "comments": "comments",
+  "print": "Print"
 }

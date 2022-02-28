@@ -56,3 +56,15 @@ class UserRegisterError extends AppState {
     required this.message,
   });
 }
+
+class AllRequestedLoading extends AppState {}
+
+class AllRequestedSuccess extends AppState {}
+
+class AllRequestedError extends AppState {
+  final String message;
+
+  AllRequestedError({
+    required this.message,
+  });
+}

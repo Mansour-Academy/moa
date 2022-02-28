@@ -18,5 +18,16 @@
   "nationalIdError": "من فضلك أدخل رقمك القومى",
   "mobileNumberError": "من فضلك أدخل رقم الموبايل الخاص بك ",
   "addressError": "من فضلك أدخل عنوانك",
-  "confirmPasswordError": "من فضلك أدخل أعد إدخال كلمة المرور للتأكيد"
+  "confirmPasswordError": "من فضلك أدخل أعد إدخال كلمة المرور للتأكيد",
+
+  "myRequests": "طلباتى",
+  "orderNumber": "رقم الطلب",
+  "requestType": "نوع الطلب",
+  "submissionDate": "تاريخ التقديم",
+  "orderStatus": "حالة الطلب",
+  "departmentName": "اسم القسم",
+  "responseDate": "تاريخ الرد",
+  "attendanceDate": "موعد الحضور",
+  "comments": "تعليقات",
+  "print": "طباعة"
 }

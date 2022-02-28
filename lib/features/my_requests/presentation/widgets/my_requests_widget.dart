@@ -14,8 +14,11 @@ import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
 import 'package:moa/features/register/presentation/pages/register_page.dart';
 
+import '../../../../core/util/constants.dart';
+import 'my_requests_item.dart';
+
 class MyRequestsWidget extends StatelessWidget {
-  MyRequestsWidget({Key? key}) : super(key: key);
+  const MyRequestsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,12 @@ class MyRequestsWidget extends StatelessWidget {
       listener: (context, state) {
       },
       builder: (context, state) {
-        return Container();
+        return ListView.separated(
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (context, index) =>  const MyRequestsItem(),
+          separatorBuilder: (context, index) => space16Vertical(context),
+          itemCount:  10,
+        );
       },
     );
   }

@@ -21,7 +21,34 @@ class TranslationModel {
   late String addressError;
   late String confirmPasswordError;
 
+  late String myRequests;
+  late String orderNumber;
+  late String requestType;
+  late String submissionDate;
+  late String orderStatus;
+  late String departmentName;
+  late String responseDate;
+  late String attendanceDate;
+  late String comments;
+  late String print;
+
+
+
+
+
   TranslationModel.fromJson(Map<String, dynamic> json) {
+    print = json['print'];
+    myRequests = json['myRequests'];
+    orderNumber = json['orderNumber'];
+    requestType = json['requestType'];
+    submissionDate = json['submissionDate'];
+    orderStatus = json['orderStatus'];
+    departmentName = json['departmentName'];
+    responseDate = json['responseDate'];
+    attendanceDate = json['attendanceDate'];
+    comments = json['comments'];
+
+
     fullNameError = json['fullNameError'];
     nationalIdError = json['nationalIdError'];
     mobileNumberError = json['mobileNumberError'];

@@ -23,7 +23,10 @@ const String liteGreyColor = 'F9F8F7';
 const String greenColor = '07B055';
 const String blueColor = '0E72ED';
 
+
+
 const Color whiteColor = Colors.white;
+const Color blackColor = Colors.black;
 
 const Map<int, Color> color = {
   50: Color.fromRGBO(136, 14, 79, .1),
@@ -49,6 +52,12 @@ void navigateTo(context, widget) => Navigator.push(
         builder: (context) => widget,
       ),
     );
+
+
+Widget myDivider(context) => Divider(
+  height: 0.0,
+  color: HexColor(regularGrey),
+);
 
 void navigateAndFinish(context, widget) => Navigator.pushAndRemoveUntil(
     context,

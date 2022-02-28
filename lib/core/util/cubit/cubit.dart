@@ -242,4 +242,22 @@ class AppCubit extends Cubit<AppState> {
       },
     );
   }
+
+  void allRequested() async {
+
+    emit(AllRequestedLoading());
+
+    final result = await _repository.getAllRequested();
+
+    result.fold(
+      (failure) {
+        emit(AllRequestedError(message: failure,),);
+      },
+      (data) {
+        // registerModel = data;
+
+        emit(AllRequestedSuccess());
+      },
+    );
+  }
 }
