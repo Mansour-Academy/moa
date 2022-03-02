@@ -27,7 +27,6 @@ class StartWidget extends StatelessWidget {
                   text: appTranslation(context).browse,
                   onTap: () {
                     navigateTo(context, const MainPage());
-                    // navigateAndFinish(context, const MainPage());
                   },
                 ),
                 space8Vertical(context),
@@ -36,7 +35,7 @@ class StartWidget extends StatelessWidget {
                   text: appTranslation(context).myRequests,
                   onTap: () {
                     navigateTo(context, const MyRequestsPage());
-                    // navigateAndFinish(context, const MyRequestsPage());
+
                   },
                 ),
                 space8Vertical(context),

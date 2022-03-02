@@ -3,20 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/widgets/logo.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
-import 'package:moa/features/main/presentation/pages/main_page.dart';
 import 'package:moa/features/register/presentation/pages/register_page.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/local/cache_helper.dart';
 import '../../../../core/network/remote/api_endpoints.dart';
-import '../../../my_requests/presentation/pages/my_requests_page.dart';
+import '../../../start/presentation/pages/start_page.dart';
 
 class LoginWidget extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
@@ -34,7 +32,7 @@ class LoginWidget extends StatelessWidget {
         if(state is UserLoginSuccess) {
           sl<CacheHelper>().put('token', state.token);
           token = state.token;
-          navigateAndFinish(context, const MyRequestsPage());
+          navigateAndFinish(context, const StartPage());
         }
       },
       builder: (context, state) {
