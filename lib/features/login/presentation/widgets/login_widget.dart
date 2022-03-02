@@ -84,6 +84,7 @@ class LoginWidget extends StatelessWidget {
                       isLoading: state is UserLoginLoading,
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           AppCubit.get(context).userLogin();
                         }
                       },
