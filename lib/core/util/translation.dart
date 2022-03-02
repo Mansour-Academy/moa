@@ -32,6 +32,8 @@ class TranslationModel {
   late String comments;
   late String print;
   late String noDataFound;
+  late String logout;
+  late String browse;
 
 
 
@@ -72,6 +74,8 @@ class TranslationModel {
     passwordError = json['passwordError'];
     donNotHaveAccount = json['donNotHaveAccount'];
     registerNow = json['registerNow'];
+    logout = json['logout'];
+    browse = json['browse'];
   }
 
   Map toJson() => {
@@ -96,5 +100,7 @@ class TranslationModel {
         'passwordError': passwordError,
         'donNotHaveAccount': donNotHaveAccount,
         'registerNow': registerNow,
+        'logout': logout,
+        'browse': browse,
       };
 }

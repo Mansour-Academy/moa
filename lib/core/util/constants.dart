@@ -3,7 +3,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:moa/core/di/injection.dart';
+import 'package:moa/core/network/local/cache_helper.dart';
+import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/util/translation.dart';
+import 'package:moa/features/login/presentation/pages/login_page.dart';
 
 import 'cubit/cubit.dart';
 
@@ -51,6 +55,33 @@ String getTranslatedText({
   }
   return en;
 }
+
+void signOut(context) {
+  sl<CacheHelper>().clear('token').then((value) {
+    if (value) {
+      token = null;
+      // showToast(
+      //     message: 'Sign out Successfully', toastStates: ToastStates.SUCCESS);
+      navigateAndFinish(context, const LoginPage());
+    }
+  });
+}
+
+// void showToast({
+//   required String message,
+//   required ToastStates toastStates,
+// }) =>
+//     toast.Fluttertoast.showToast(
+//         msg: message,
+//         toastLength: toast.Toast.LENGTH_SHORT,
+//         gravity: toast.ToastGravity.BOTTOM,
+//         timeInSecForIosWeb: 5,
+//         backgroundColor: choseToastColor(toastStates),
+//         textColor: Colors.white,
+//         fontSize: 16.0);
+//
+// // ignore: constant_identifier_names
+// enum ToastStates { SUCCESS, ERROR, WARNING }
 
 TranslationModel appTranslation(context) =>
     AppCubit.get(context).translationModel;

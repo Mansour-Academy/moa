@@ -13,13 +13,11 @@
   "mobileNumber": "Mobile Number",
   "address": "Address",
   "confirmPassword": "Confirm Password",
-
   "fullNameError": "please enter your full name",
   "nationalIdError": "please enter your national id",
   "mobileNumberError": "please enter your mobile number",
   "addressError": "please enter your address",
   "confirmPasswordError": "please re-enter password for confirmation",
-
   "myRequests": "My requests",
   "orderNumber": "order number",
   "requestType": "request type",
@@ -30,5 +28,7 @@
   "attendanceDate": "Attendance date",
   "comments": "comments",
   "print": "Print",
+  "logout": "Logout",
+  "browse": "Browse",
   "noDataFound": "No data Found"
 }
