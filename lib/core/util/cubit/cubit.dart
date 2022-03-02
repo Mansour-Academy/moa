@@ -272,7 +272,7 @@ class AppCubit extends Cubit<AppState> {
   void changeLoad({
   required bool load,
 }) {
-    isLoaded = true;
+    isLoaded = load;
     emit(ChangeLoaded());
   }
 }

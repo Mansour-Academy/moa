@@ -33,14 +33,14 @@ class MainWidget extends StatelessWidget {
                   method: 'POST',
                 ),
                 onLoadStart: (value, uri) {
-                  debugPrint('load');
+                  debugPrint('created');
 
                   AppCubit.get(context).changeLoad(
                     load: true,
                   );
                 },
                 onWebViewCreated: (value) {
-                  debugPrint('created');
+                  debugPrint('loading');
 
                   AppCubit.get(context).changeLoad(
                     load: false,

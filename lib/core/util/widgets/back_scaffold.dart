@@ -6,11 +6,15 @@ import 'package:moa/core/util/cubit/state.dart';
 
 class BackScaffold extends StatelessWidget {
   final Widget body;
+  final Color color;
+  Color? iconColor;
   double elevation;
 
   BackScaffold({
     Key? key,
     required this.body,
+    this.color = Colors.white,
+    this.iconColor,
     this.elevation = 0.0,
   }) : super(key: key);
 
@@ -18,13 +22,22 @@ class BackScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            elevation: elevation,
-            shadowColor: Colors.grey[100],
+        return Directionality(
+          textDirection: AppCubit.get(context).isRtl
+              ? TextDirection.rtl
+              : TextDirection.ltr,
+          child: Scaffold(
+            appBar: AppBar(
+              iconTheme: iconColor != null ? IconThemeData(
+                color: iconColor,
+              ) : null,
+              backgroundColor: color,
+              centerTitle: true,
+              elevation: elevation,
+              shadowColor: Colors.grey[100],
+            ),
+            body: body,
           ),
-          body: body,
         );
       },
     );
