@@ -32,5 +32,6 @@
   "print": "طباعة",
   "logout": "تسجيل الخروج",
   "browse": "تصفح",
-  "noDataFound": "لا يوجد معلومات"
+  "noDataFound": "لا يوجد معلومات",
+  "noRequests": "لا يوجد طلبات..."
 }

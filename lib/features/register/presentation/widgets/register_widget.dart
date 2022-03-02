@@ -219,6 +219,7 @@ class RegisterWidget extends StatelessWidget {
                       isLoading: state is UserRegisterLoading,
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
+                          FocusScope.of(context).requestFocus(FocusNode());
                           AppCubit.get(context).userRegister();
                         }
                       },
