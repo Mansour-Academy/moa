@@ -34,12 +34,14 @@ class TranslationModel {
   late String noDataFound;
   late String logout;
   late String browse;
+  late String noRequests;
 
 
 
 
 
   TranslationModel.fromJson(Map<String, dynamic> json) {
+    noRequests = json['noRequests'];
     noDataFound = json['noDataFound'];
     print = json['print'];
     myRequests = json['myRequests'];

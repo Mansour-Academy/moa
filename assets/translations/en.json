@@ -30,5 +30,6 @@
   "print": "Print",
   "logout": "Logout",
   "browse": "Browse",
-  "noDataFound": "No data Found"
+  "noDataFound": "No data Found",
+  "noRequests": "No requests..."
 }

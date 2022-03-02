@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_conditional_rendering/conditional.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/cubit/state.dart';
+import 'package:moa/core/util/widgets/empty_widget.dart';
 import 'package:moa/core/util/widgets/my_indicator.dart';
 
 import '../../../../core/util/constants.dart';
@@ -28,14 +30,24 @@ class _MyRequestsWidgetState extends State<MyRequestsWidget> {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {},
       builder: (context, state) {
-        if(state is AllRequestedLoading) {
+        if (state is AllRequestedLoading) {
           return const MyIndicator();
         }
-        return ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) => MyRequestsItem(model: AppCubit.get(context).requests[index],),
-          separatorBuilder: (context, index) => space8Vertical(context),
-          itemCount: AppCubit.get(context).requests.length,
+        return Conditional.single(
+          context: context,
+          conditionBuilder: (context) =>
+              AppCubit.get(context).requests.isNotEmpty,
+          widgetBuilder: (context) => ListView.separated(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) => MyRequestsItem(
+              model: AppCubit.get(context).requests[index],
+            ),
+            separatorBuilder: (context, index) => space8Vertical(context),
+            itemCount: AppCubit.get(context).requests.length,
+          ),
+          fallbackBuilder: (context) => EmptyWidget(
+            text: appTranslation(context).noRequests,
+          ),
         );
       },
     );
