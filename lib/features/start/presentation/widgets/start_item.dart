@@ -36,7 +36,7 @@ class StartItem extends StatelessWidget {
                     Expanded(
                       child: Image(
                         image: AssetImage('assets/images/$image.png'),
-                        color: HexColor(darkGreyColor),
+                        color: HexColor(mainColor),
                       ),
                     ),
                     space16Vertical(context),
@@ -45,7 +45,7 @@ class StartItem extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       style: Theme.of(context).textTheme.headline4!.copyWith(
-                            color: HexColor(darkGreyColor),
+                            color: HexColor(mainColor),
                             fontWeight: FontWeight.w400,
                           ),
                     ),
