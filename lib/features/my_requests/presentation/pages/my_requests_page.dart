@@ -10,7 +10,7 @@ class MyRequestsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainScaffold(
+    return const MainScaffold(
       scaffold: Scaffold(
         body: SafeArea(
           child: HideKeyboardPage(

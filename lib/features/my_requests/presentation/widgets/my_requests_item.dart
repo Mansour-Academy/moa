@@ -83,7 +83,6 @@ class MyRequestsItem extends StatelessWidget {
                       flex: 2,
                       child: Text(
                         model.corrNumber.isNotEmpty?  model.corrNumber : appTranslation(context).noDataFound,
-                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
                               color: HexColor(darkGreyColor),
                           fontWeight: FontWeight.w400,
@@ -119,7 +118,6 @@ class MyRequestsItem extends StatelessWidget {
                         ar: model.corrCategoryTypeNavigation.aname,
                         context: context,
                       ): appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                         fontWeight: FontWeight.w400,
@@ -145,8 +143,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.corrDeliveryDate.isNotEmpty? model.corrDeliveryDate : appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
+                      model.corrDeliveryDate.isNotEmpty? model.corrDeliveryDate.split('T').first : appTranslation(context).noDataFound,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                             fontWeight: FontWeight.w400
@@ -173,7 +170,7 @@ class MyRequestsItem extends StatelessWidget {
                     flex: 2,
                     child: Text(
                       model.reqStatusNavigation.description.isNotEmpty? model.reqStatusNavigation.description :  appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
+
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                         fontWeight: FontWeight.w400,
@@ -209,7 +206,6 @@ class MyRequestsItem extends StatelessWidget {
                         ar:  model.corrCategoryTypeNavigation.categoryParent!.aname,
                         context: context,
                       ) : appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                         fontWeight: FontWeight.w400,
@@ -235,8 +231,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.requestReplyDate.isNotEmpty? model.requestReplyDate : appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
+                      model.requestReplyDate.isNotEmpty? model.requestReplyDate.split('T').first : appTranslation(context).noDataFound,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                         fontWeight: FontWeight.w400,
@@ -262,8 +257,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.citizenReplyDetailsNavigation != null? model.citizenReplyDetailsNavigation!.attendenceDate : appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
+                      model.citizenReplyDetailsNavigation != null? model.citizenReplyDetailsNavigation!.attendenceDate.split('T').first : appTranslation(context).noDataFound,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                         fontWeight: FontWeight.w400,
@@ -289,8 +283,7 @@ class MyRequestsItem extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      model.citizenReplyDetailsNavigation != null ? model.citizenReplyDetailsNavigation!.attendenceDate :  appTranslation(context).noDataFound,
-                      textAlign: TextAlign.center,
+                      model.citizenReplyDetailsNavigation != null ? model.citizenReplyDetailsNavigation!.requiredComment :  appTranslation(context).noDataFound,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             color: HexColor(darkGreyColor),
                         fontWeight: FontWeight.w400,

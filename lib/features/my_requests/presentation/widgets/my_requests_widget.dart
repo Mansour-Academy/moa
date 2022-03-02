@@ -33,7 +33,7 @@ class _MyRequestsWidgetState extends State<MyRequestsWidget> {
         }
         return ListView.separated(
           physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) =>  MyRequestsItem(model: AppCubit.get(context).requests[index],),
+          itemBuilder: (context, index) => MyRequestsItem(model: AppCubit.get(context).requests[index],),
           separatorBuilder: (context, index) => space8Vertical(context),
           itemCount: AppCubit.get(context).requests.length,
         );
