@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.moa">
    <application
-        android:label="moa"
+        android:label="MOA"
        android:usesCleartextTraffic="true"
        android:icon="@mipmap/ic_launcher">
         <activity
