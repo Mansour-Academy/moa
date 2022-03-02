@@ -38,6 +38,11 @@ class StartItem extends StatelessWidget {
                         image: AssetImage('assets/images/$image.png'),
                         color: HexColor(mainColor),
                       ),
+                      // child: SvgPicture.asset(
+                      //   'assets/images/$image.svg',
+                      //   color: HexColor(mainColor),
+                      //   height: double.infinity,
+                      // ),
                     ),
                     space16Vertical(context),
                     Text(
