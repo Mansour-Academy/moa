@@ -34,7 +34,6 @@ class LoginWidget extends StatelessWidget {
         if(state is UserLoginSuccess) {
           sl<CacheHelper>().put('token', state.token);
           token = state.token;
-
           navigateAndFinish(context, const MyRequestsPage());
         }
       },
@@ -103,7 +102,6 @@ class LoginWidget extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             AppCubit.get(context).getAllGovernments();
-
                             navigateTo(
                               context,
                               const RegisterPage(),

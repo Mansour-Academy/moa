@@ -30,5 +30,7 @@
   "attendanceDate": "موعد الحضور",
   "comments": "تعليقات",
   "print": "طباعة",
+  "logout": "تسجيل الخروج",
+  "browse": "تصفح",
   "noDataFound": "لا يوجد معلومات"
 }

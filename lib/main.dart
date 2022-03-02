@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
 import 'package:moa/core/di/injection.dart' as di;
 import 'package:moa/core/di/injection.dart';
-
 import 'package:moa/core/util/bloc_observer.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/cubit/state.dart';
@@ -15,7 +12,7 @@ import 'package:moa/features/my_requests/presentation/pages/my_requests_page.dar
 import 'core/network/local/cache_helper.dart';
 import 'core/network/remote/api_endpoints.dart';
 import 'core/util/constants.dart';
-import 'features/main/presentation/pages/main_page.dart';
+import 'features/start/presentation/pages/start_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,7 +70,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.light,
             theme: AppCubit.get(context).lightTheme,
-            home: token != null ? const MyRequestsPage() : const LoginPage(),
+            home: token != null ? const StartPage() : const LoginPage(),
           );
         },
       ),
