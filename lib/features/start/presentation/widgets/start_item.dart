@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/util/constants.dart';
 
@@ -34,15 +35,18 @@ class StartItem extends StatelessWidget {
                 child: Column(
                   children: [
                     Expanded(
-                      child: Image(
-                        image: AssetImage('assets/images/$image.png'),
-                        color: HexColor(mainColor),
-                      ),
-                      // child: SvgPicture.asset(
-                      //   'assets/images/$image.svg',
+                      // child: Image(
+                      //   image: AssetImage('assets/images/$image.png'),
                       //   color: HexColor(mainColor),
-                      //   height: double.infinity,
                       // ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SvgPicture.asset(
+                          'assets/images/$image.svg',
+                          color: HexColor(mainColor),
+                          height: double.infinity,
+                        ),
+                      ),
                     ),
                     space16Vertical(context),
                     Text(
@@ -51,7 +55,8 @@ class StartItem extends StatelessWidget {
                       maxLines: 2,
                       style: Theme.of(context).textTheme.headline4!.copyWith(
                             color: HexColor(mainColor),
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w700,
+                        fontFamily: 'cairo',
                           ),
                     ),
                   ],

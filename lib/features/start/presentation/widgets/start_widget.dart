@@ -8,6 +8,8 @@ import 'package:moa/features/main/presentation/pages/main_page.dart';
 import 'package:moa/features/my_requests/presentation/pages/my_requests_page.dart';
 import 'package:moa/features/start/presentation/widgets/start_item.dart';
 
+import '../../../../core/util/widgets/logo.dart';
+
 class StartWidget extends StatelessWidget {
   const StartWidget({Key? key}) : super(key: key);
 
@@ -22,6 +24,8 @@ class StartWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const AppLogo(),
+                space3Vertical(context),
                 StartItem(
                   image: 'earth',
                   text: appTranslation(context).browse,

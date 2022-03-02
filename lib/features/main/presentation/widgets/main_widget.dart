@@ -12,6 +12,7 @@ import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/widgets/logo.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
+import 'package:moa/core/util/widgets/my_indicator.dart';
 import 'package:moa/features/register/presentation/pages/register_page.dart';
 
 class MainWidget extends StatelessWidget {
@@ -20,15 +21,35 @@ class MainWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SafeArea(
-          child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: Uri.parse('http://agri-egypt.it-blocks.com:82/Account/LoginMobile?token=$token'),
-                method: 'POST',
-              )
+          child: Stack(
+            children: [
+              InAppWebView(
+                initialUrlRequest: URLRequest(
+                  url: Uri.parse(
+                      'http://agri-egypt.it-blocks.com:82/Account/LoginMobile?token=$token'),
+                  method: 'POST',
+                ),
+                onLoadStart: (value, uri) {
+                  debugPrint('load');
+
+                  AppCubit.get(context).changeLoad(
+                    load: true,
+                  );
+                },
+                onWebViewCreated: (value) {
+                  debugPrint('created');
+
+                  AppCubit.get(context).changeLoad(
+                    load: false,
+                  );
+                },
+              ),
+              if(!AppCubit.get(context).isLoaded)
+                const MyIndicator(),
+            ],
           ),
         );
       },

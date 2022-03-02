@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
@@ -9,8 +10,13 @@ import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/widgets/logo.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
+import 'package:moa/features/login/presentation/pages/login_page.dart';
 
+import '../../../../core/di/injection.dart';
 import '../../../../core/models/government_model.dart';
+import '../../../../core/network/local/cache_helper.dart';
+import '../../../../core/network/remote/api_endpoints.dart';
+import '../../../start/presentation/pages/start_page.dart';
 
 // const List<String> cities = [
 //   'اختر',
@@ -54,7 +60,15 @@ class RegisterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state is UserRegisterError) {
+          Fluttertoast.showToast(msg: state.message);
+        }
+
+        if(state is UserRegisterSuccess) {
+          navigateAndFinish(context, const LoginPage());
+        }
+      },
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.symmetric(

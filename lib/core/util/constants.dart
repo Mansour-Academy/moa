@@ -96,7 +96,7 @@ void navigateTo(context, widget) => Navigator.push(
     );
 
 Widget myDivider(context) => Divider(
-      height: 0.0,
+      height: 1.0,
       color: HexColor(regularGrey),
     );
 

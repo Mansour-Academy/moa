@@ -68,3 +68,5 @@ class AllRequestedError extends AppState {
     required this.message,
   });
 }
+
+class ChangeLoaded extends AppState {}
