@@ -71,4 +71,6 @@ class AllRequestedError extends AppState {
 
 class ChangeLoaded extends AppState {}
 
+class PrintRequestPDF extends AppState {}
+
 class BottomChanged extends AppState {}

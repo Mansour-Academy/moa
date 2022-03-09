@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +9,6 @@ import 'package:moa/core/models/login_model.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/translation.dart';
-
 import '../../models/all_requests_model.dart';
 import '../../models/register_model.dart';
 import '../../network/repository.dart';
@@ -22,6 +20,7 @@ class AppCubit extends Cubit<AppState> {
     required Repository repository,
   })  : _repository = repository,
         super(Empty());
+
 
   static AppCubit get(context) => BlocProvider.of(context);
 
@@ -301,4 +300,59 @@ class AppCubit extends Cubit<AppState> {
     isLoaded = load;
     emit(ChangeLoaded());
   }
+
+//   Future<void> _createPDF() async {
+//     PdfDocument document = PdfDocument();
+//     document.pages.add();
+//
+//
+//     List<int> bytes = document.save();
+//
+//     saveAndLaunchFile(bytes, 'Output.pdf');
+//
+//     emit(PrintRequestPDF());
+// }
+
+
+
+
+  // Future<void> printRequestPDF() async {
+  //   final pdf = pw.Document();
+  //
+  //   // pdf.addPage(
+  //   //   pw.Page(
+  //   //     build: (pw.Context context) => pw.Center(
+  //   //       child: pw.Text('Hello World!',
+  //   //       ),
+  //   //     ),
+  //   //   ),
+  //   // );
+  //
+  //   // final Uint8List fontData = File('Cairo-Regular.ttf').readAsBytesSync();
+  //   // final ttf = pw.Font.ttf(fontData.buffer.asByteData());
+  //   //
+  //   // pdf.addPage(pw.Page(
+  //   //     pageFormat: PdfPageFormat.a4,
+  //   //     build: (pw.Context context) {
+  //   //       return pw.Center(
+  //   //         child: pw.Text('Hello World', style: pw.TextStyle(font: ttf, fontSize: 40)),
+  //   //       ); // Center
+  //   //     }));
+  //
+  //   final font = await PdfGoogleFonts.nunitoExtraLight();
+  //
+  //   pdf.addPage(pw.Page(
+  //       pageFormat: PdfPageFormat.a4,
+  //       build: (pw.Context context) {
+  //         return pw.Center(
+  //           child: pw.Text('Hello World', style: pw.TextStyle(font: font, fontSize: 40)),
+  //         ); // Center
+  //       }));
+  //
+  //
+  //   final file = File('example.pdf');
+  //   await file.writeAsBytes(await pdf.save());
+  //
+  //   emit(PrintRequestPDF());
+  // }
 }

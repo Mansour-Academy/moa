@@ -16,6 +16,7 @@ class NameItem extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
+            flex: 2,
             child: Text(
               title,
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
@@ -24,7 +25,7 @@ class NameItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
               desc,
               style: Theme.of(context).textTheme.bodyText2!.copyWith(
