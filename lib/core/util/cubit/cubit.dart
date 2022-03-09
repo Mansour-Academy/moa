@@ -158,6 +158,32 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeSelectedGovernment());
   }
 
+  PageController pageController = PageController();
+
+  int currentIndex = 0;
+
+  void bottomChanged(int index, context) {
+    if (index == 2) {
+      showLogoutDialog(
+        context: context,
+        function: () {
+          signOut(
+            context,
+          );
+        },
+      );
+      return;
+    }
+
+    currentIndex = index;
+
+    pageController.jumpToPage(
+      index,
+    );
+
+    emit(BottomChanged());
+  }
+
   LoginModel? loginModel;
 
   void userLogin() async {
@@ -270,8 +296,8 @@ class AppCubit extends Cubit<AppState> {
   bool isLoaded = false;
 
   void changeLoad({
-  required bool load,
-}) {
+    required bool load,
+  }) {
     isLoaded = load;
     emit(ChangeLoaded());
   }

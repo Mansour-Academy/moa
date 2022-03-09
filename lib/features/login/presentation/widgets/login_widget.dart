@@ -26,7 +26,7 @@ class LoginWidget extends StatelessWidget {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
         if(state is UserLoginError) {
-          Fluttertoast.showToast(msg: state.message);
+          Fluttertoast.showToast(msg: appTranslation(context).loginError,);
         }
 
         if(state is UserLoginSuccess) {

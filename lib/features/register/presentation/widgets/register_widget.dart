@@ -10,6 +10,7 @@ import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/widgets/logo.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
+import 'package:moa/core/util/widgets/my_indicator.dart';
 import 'package:moa/features/login/presentation/pages/login_page.dart';
 
 import '../../../../core/di/injection.dart';
@@ -70,79 +71,79 @@ class RegisterWidget extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: responsiveValue(
-              context,
-              16.0,
+        if (AppCubit.get(context).governmentsList.isNotEmpty) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: responsiveValue(
+                context,
+                16.0,
+              ),
             ),
-          ),
-          child: Center(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional.center,
-                      child: Column(
-                        children: [
-                          const AppLogo(),
-                          Text(
-                            appTranslation(context).registerHead,
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ],
+            child: Center(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional.center,
+                        child: Column(
+                          children: [
+                            const AppLogo(),
+                            Text(
+                              appTranslation(context).registerHead,
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    space40Vertical(context),
-                    MyForm(
-                      isPassword: false,
-                      type: TextInputType.name,
-                      error: appTranslation(context).fullNameError,
-                      controller:
-                          AppCubit.get(context).registerFullNameController,
-                      label: appTranslation(context).fullName,
-                    ),
-                    space8Vertical(context),
-                    MyForm(
-                      isPassword: false,
-                      type: TextInputType.number,
-                      error: appTranslation(context).nationalIdError,
-                      controller: AppCubit.get(context).registerIdController,
-                      label: appTranslation(context).nationalId,
-                    ),
-                    space8Vertical(context),
-                    MyForm(
-                      isPassword: false,
-                      type: TextInputType.phone,
-                      error: appTranslation(context).mobileNumberError,
-                      controller:
-                          AppCubit.get(context).registerMobileController,
-                      label: appTranslation(context).mobileNumber,
-                    ),
-                    space8Vertical(context),
-                    MyForm(
-                      isPassword: false,
-                      type: TextInputType.text,
-                      error: appTranslation(context).addressError,
-                      controller:
-                          AppCubit.get(context).registerAddressController,
-                      label: appTranslation(context).address,
-                    ),
-                    space8Vertical(context),
-                    MyForm(
-                      isPassword: false,
-                      type: TextInputType.emailAddress,
-                      error: appTranslation(context).emailAddressError,
-                      controller:
-                          AppCubit.get(context).registerEmailAddressController,
-                      label: appTranslation(context).emailAddress,
-                    ),
-                    space8Vertical(context),
-                    if (AppCubit.get(context).governmentsList.isNotEmpty)
+                      space40Vertical(context),
+                      MyForm(
+                        isPassword: false,
+                        type: TextInputType.name,
+                        error: appTranslation(context).fullNameError,
+                        controller:
+                        AppCubit.get(context).registerFullNameController,
+                        label: appTranslation(context).fullName,
+                      ),
+                      space8Vertical(context),
+                      MyForm(
+                        isPassword: false,
+                        type: TextInputType.number,
+                        error: appTranslation(context).nationalIdError,
+                        controller: AppCubit.get(context).registerIdController,
+                        label: appTranslation(context).nationalId,
+                      ),
+                      space8Vertical(context),
+                      MyForm(
+                        isPassword: false,
+                        type: TextInputType.phone,
+                        error: appTranslation(context).mobileNumberError,
+                        controller:
+                        AppCubit.get(context).registerMobileController,
+                        label: appTranslation(context).mobileNumber,
+                      ),
+                      space8Vertical(context),
+                      MyForm(
+                        isPassword: false,
+                        type: TextInputType.text,
+                        error: appTranslation(context).addressError,
+                        controller:
+                        AppCubit.get(context).registerAddressController,
+                        label: appTranslation(context).address,
+                      ),
+                      space8Vertical(context),
+                      MyForm(
+                        isPassword: false,
+                        type: TextInputType.emailAddress,
+                        error: appTranslation(context).emailAddressError,
+                        controller:
+                        AppCubit.get(context).registerEmailAddressController,
+                        label: appTranslation(context).emailAddress,
+                      ),
+                      space8Vertical(context),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -173,8 +174,8 @@ class RegisterWidget extends StatelessWidget {
                                   .textTheme
                                   .subtitle2!
                                   .copyWith(
-                                    color: HexColor(mainColor),
-                                  ),
+                                color: HexColor(mainColor),
+                              ),
                               onChanged: (GovernmentModel? newValue) {
                                 AppCubit.get(context).changeSelectedGovernment(
                                   value: newValue!,
@@ -185,7 +186,7 @@ class RegisterWidget extends StatelessWidget {
                               items: AppCubit.get(context)
                                   .governmentsList
                                   .map<DropdownMenuItem<GovernmentModel>>(
-                                (GovernmentModel value) {
+                                    (GovernmentModel value) {
                                   return DropdownMenuItem<GovernmentModel>(
                                     value: value,
                                     child: Text(value.description),
@@ -196,42 +197,45 @@ class RegisterWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                    space8Vertical(context),
-                    MyForm(
-                      isPassword: true,
-                      type: TextInputType.visiblePassword,
-                      error: appTranslation(context).passwordError,
-                      controller:
-                          AppCubit.get(context).registerPasswordController,
-                      label: appTranslation(context).password,
-                    ),
-                    space8Vertical(context),
-                    MyForm(
-                      isPassword: true,
-                      type: TextInputType.visiblePassword,
-                      error: appTranslation(context).confirmPasswordError,
-                      controller: AppCubit.get(context)
-                          .registerConfirmPasswordController,
-                      label: appTranslation(context).confirmPassword,
-                    ),
-                    space40Vertical(context),
-                    MyButton(
-                      isLoading: state is UserRegisterLoading,
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          FocusScope.of(context).requestFocus(FocusNode());
-                          AppCubit.get(context).userRegister();
-                        }
-                      },
-                      text: appTranslation(context).registerNow,
-                    ),
-                    space40Vertical(context),
-                  ],
+                      space8Vertical(context),
+                      MyForm(
+                        isPassword: true,
+                        type: TextInputType.visiblePassword,
+                        error: appTranslation(context).passwordError,
+                        controller:
+                        AppCubit.get(context).registerPasswordController,
+                        label: appTranslation(context).password,
+                      ),
+                      space8Vertical(context),
+                      MyForm(
+                        isPassword: true,
+                        type: TextInputType.visiblePassword,
+                        error: appTranslation(context).confirmPasswordError,
+                        controller: AppCubit.get(context)
+                            .registerConfirmPasswordController,
+                        label: appTranslation(context).confirmPassword,
+                      ),
+                      space40Vertical(context),
+                      MyButton(
+                        isLoading: state is UserRegisterLoading,
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            AppCubit.get(context).userRegister();
+                          }
+                        },
+                        text: appTranslation(context).registerNow,
+                      ),
+                      space40Vertical(context),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
+        }
+
+        return const MyIndicator();
       },
     );
   }

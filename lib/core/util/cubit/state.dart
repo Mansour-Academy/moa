@@ -70,3 +70,5 @@ class AllRequestedError extends AppState {
 }
 
 class ChangeLoaded extends AppState {}
+
+class BottomChanged extends AppState {}

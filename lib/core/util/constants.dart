@@ -7,6 +7,7 @@ import 'package:moa/core/di/injection.dart';
 import 'package:moa/core/network/local/cache_helper.dart';
 import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/util/translation.dart';
+import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/features/login/presentation/pages/login_page.dart';
 
 import 'cubit/cubit.dart';
@@ -65,6 +66,80 @@ void signOut(context) {
       navigateAndFinish(context, const LoginPage());
     }
   });
+}
+
+Future<void> showLogoutDialog({
+  required BuildContext context,
+  required Function function,
+}) async {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (context) => Dialog(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              10.0,
+            ),
+            color: whiteColor),
+        padding: EdgeInsets.all(
+          responsiveValue(
+            context,
+            16.0,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              appTranslation(context).logoutConfirmation,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            space20Vertical(context),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        5.0,
+                      ),
+                      color: Theme.of(context).primaryColor.withOpacity(
+                        .1,
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: MaterialButton(
+                      color: HexColor(liteGreyColor),
+                      height: 52.0,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        appTranslation(context).cancel,
+                        style: Theme.of(context).textTheme.button!.copyWith(
+                          color: HexColor(secondaryVariant),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                space8Horizontal(context),
+                Expanded(
+                  child: MyButton(
+                    onPressed: () {
+                      function();
+                    },
+                    text: appTranslation(context).yes,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 // void showToast({

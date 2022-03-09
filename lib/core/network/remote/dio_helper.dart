@@ -166,13 +166,14 @@ extension on DioHelper {
               "Error Response Data Message => ${e.response!.data['message']}");
         }
 
+        // debugPrint("Error Response Data => ${e.response!.data}");
+        // debugPrint("Error Response Type => ${e.response!.data['title']}");
+
+
         throw ServerException(
           error: e.response!.statusMessage!,
           code: e.response!.statusCode!,
-          message:
-              e.response!.data is Map && e.response!.data.toString().isNotEmpty
-                  ? e.response!.data['message'] ?? e.response!.statusMessage
-                  : e.response!.data,
+          message: 'error',
         );
       } else {
         throw ServerException(

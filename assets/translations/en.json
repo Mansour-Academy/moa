@@ -31,5 +31,11 @@
   "logout": "Logout",
   "browse": "Browse",
   "noDataFound": "No data Found",
-  "noRequests": "No requests..."
+  "noRequests": "No requests...",
+  "home": "Home",
+
+  "logoutConfirmation": "Are you sure you want to logout?",
+  "cancel": "Cancel",
+  "yes": "Yes",
+  "loginError": "email or password is wrong, please make sure and try again"
 }

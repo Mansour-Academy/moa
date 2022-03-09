@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:moa/core/util/keep_alive_widget.dart';
 import 'package:moa/core/util/widgets/back_scaffold.dart';
 import 'package:moa/core/util/widgets/hide_keyboard_page.dart';
 import 'package:moa/core/util/widgets/main_scaffold.dart';
@@ -12,16 +13,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BackScaffold(
-      iconColor: HexColor('add1c3'),
-      color: HexColor('3d9071'),
-      body: const Scaffold(
-        body: SafeArea(
-          child: HideKeyboardPage(
-            child: MainWidget(),
-          ),
-        ),
-      ),
+    return const KeepAliveWidget(
+      child: MainWidget(),
     );
   }
 }

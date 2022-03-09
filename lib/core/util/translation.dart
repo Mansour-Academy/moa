@@ -36,11 +36,23 @@ class TranslationModel {
   late String browse;
   late String noRequests;
 
+  late String home;
 
+  late String logoutConfirmation;
+  late String cancel;
+  late String yes;
 
-
+  late String loginError;
 
   TranslationModel.fromJson(Map<String, dynamic> json) {
+    loginError = json['loginError'];
+
+    logoutConfirmation = json['logoutConfirmation'];
+    cancel = json['cancel'];
+    yes = json['yes'];
+
+    home = json['home'];
+
     noRequests = json['noRequests'];
     noDataFound = json['noDataFound'];
     print = json['print'];
@@ -81,6 +93,14 @@ class TranslationModel {
   }
 
   Map toJson() => {
+        'loginError': loginError,
+
+        'logoutConfirmation': logoutConfirmation,
+        'cancel': cancel,
+        'yes': yes,
+
+        'home': home,
+
         'fullNameError': fullNameError,
         'nationalIdError': nationalIdError,
         'mobileNumberError': mobileNumberError,
