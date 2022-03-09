@@ -4,7 +4,6 @@ import 'package:flutter/painting.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/models/all_requests_model.dart';
 import 'package:moa/core/util/constants.dart';
-import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/features/my_requests/presentation/widgets/name_item.dart';
 
@@ -23,6 +22,7 @@ class MyRequestsItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),
@@ -30,35 +30,38 @@ class MyRequestsItem extends StatelessWidget {
             color: HexColor(regularGrey),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-             ExpansionTile(
-               collapsedBackgroundColor: HexColor(liteGreyColor),
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: Material(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            // color: HexColor(liteGreyColor),
+            borderRadius: BorderRadius.circular(8.0),
+            child: ExpansionTile(
+              collapsedBackgroundColor: HexColor(liteGreyColor),
               tilePadding: const EdgeInsetsDirectional.only(end: 8.0),
-              // backgroundColor: HexColor(liteGreyColor),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                          appTranslation(context).orderNumber,
+                        appTranslation(context).orderNumber,
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
                     ),
                     // space30Horizontal(context),
                     Expanded(
-                      child: Text(model.corrNumber.isNotEmpty
-                              ? model.corrNumber
-                              : appTranslation(context).noDataFound,
+                      child: Text(
+                        model.corrNumber.isNotEmpty
+                            ? model.corrNumber
+                            : appTranslation(context).noDataFound,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          color: HexColor(darkGreyColor),
-                          fontWeight: FontWeight.w400,
-                        ),
+                              color: HexColor(darkGreyColor),
+                              fontWeight: FontWeight.w400,
+                            ),
                       ),
                     ),
                   ],
@@ -75,16 +78,16 @@ class MyRequestsItem extends StatelessWidget {
                 myDivider(context),
                 NameItem(
                   title: appTranslation(context).requestType,
-                  desc:  getTranslatedText(
+                  desc: getTranslatedText(
                     en: model.corrCategoryTypeNavigation.ename,
                     ar: model.corrCategoryTypeNavigation.aname,
                     context: context,
                   ).isNotEmpty
                       ? getTranslatedText(
-                    en: model.corrCategoryTypeNavigation.ename,
-                    ar: model.corrCategoryTypeNavigation.aname,
-                    context: context,
-                  )
+                          en: model.corrCategoryTypeNavigation.ename,
+                          ar: model.corrCategoryTypeNavigation.aname,
+                          context: context,
+                        )
                       : appTranslation(context).noDataFound,
                 ),
                 myDivider(context),
@@ -105,45 +108,42 @@ class MyRequestsItem extends StatelessWidget {
                 NameItem(
                   title: appTranslation(context).departmentName,
                   desc: getTranslatedText(
-                    en: model
-                        .corrCategoryTypeNavigation.categoryParent!.ename,
-                    ar: model
-                        .corrCategoryTypeNavigation.categoryParent!.aname,
+                    en: model.corrCategoryTypeNavigation.categoryParent!.ename,
+                    ar: model.corrCategoryTypeNavigation.categoryParent!.aname,
                     context: context,
                   ).isNotEmpty
                       ? getTranslatedText(
-                    en: model.corrCategoryTypeNavigation
-                        .categoryParent!.ename,
-                    ar: model.corrCategoryTypeNavigation
-                        .categoryParent!.aname,
-                    context: context,
-                  )
+                          en: model
+                              .corrCategoryTypeNavigation.categoryParent!.ename,
+                          ar: model
+                              .corrCategoryTypeNavigation.categoryParent!.aname,
+                          context: context,
+                        )
                       : appTranslation(context).noDataFound,
                 ),
                 myDivider(context),
                 NameItem(
                   title: appTranslation(context).responseDate,
-                  desc:  model.requestReplyDate.isNotEmpty
+                  desc: model.requestReplyDate.isNotEmpty
                       ? model.requestReplyDate.split('T').first
                       : appTranslation(context).noDataFound,
                 ),
                 myDivider(context),
                 NameItem(
-                  title:  appTranslation(context).attendanceDate,
+                  title: appTranslation(context).attendanceDate,
                   desc: model.citizenReplyDetailsNavigation != null
                       ? model.citizenReplyDetailsNavigation!.attendenceDate
-                      .split('T')
-                      .first
+                          .split('T')
+                          .first
                       : appTranslation(context).noDataFound,
                 ),
                 myDivider(context),
                 NameItem(
                   title: appTranslation(context).comments,
-                  desc:  model.citizenReplyDetailsNavigation != null
+                  desc: model.citizenReplyDetailsNavigation != null
                       ? model.citizenReplyDetailsNavigation!.requiredComment
                       : appTranslation(context).noDataFound,
                 ),
-
                 myDivider(context),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -153,7 +153,8 @@ class MyRequestsItem extends StatelessWidget {
                       isLoading: false,
                       onPressed: () async {
                         // AppCubit.get(context).printRequestPDF();
-                        final pdfFile = await MobilePDF.generateBodyBDF(model, context);
+                        final pdfFile =
+                            await MobilePDF.generateBodyBDF(model, context);
 
                         MobilePDF.openFile(pdfFile);
                       },
@@ -163,8 +164,7 @@ class MyRequestsItem extends StatelessWidget {
                 ),
               ],
             ),
-
-          ],
+          ),
         ),
       ),
     );
