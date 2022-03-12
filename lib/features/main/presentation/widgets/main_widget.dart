@@ -37,6 +37,10 @@ class MainWidget extends StatelessWidget {
                       'http://agri-egypt.it-blocks.com:82/Account/LoginMobile?token=$token'),
                   method: 'POST',
                 ),
+                onLoadResource: (value, res) {
+                  debugPrint('onLoadResource');
+                  debugPrint(res.initiatorType);
+                },
                 onLoadStop: (value, uri) {
                   debugPrint('stop');
                   debugPrint(value.javaScriptHandlersMap.toString());
