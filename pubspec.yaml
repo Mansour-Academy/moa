@@ -53,8 +53,9 @@ dependencies:
   open_file: ^3.2.1
 
   #firebase
-  firebase_core: ^1.8.0
-  firebase_messaging: ^10.0.9
+  firebase_core: ^1.12.0
+  firebase_messaging: ^11.2.6
+
   pin_code_fields: ^7.3.0
   flutter_rating_bar: ^4.0.0
   font_awesome_flutter: ^9.2.0
@@ -69,7 +70,15 @@ dependencies:
   audioplayers: ^0.20.1
   flutter_inappwebview: ^5.3.2
   webview_flutter: ^3.0.0
-
+  cloud_firestore: ^3.1.10
+  url_launcher: ^6.0.20
+  flash: ^2.0.3+2
+  flutter_staggered_grid_view: ^0.6.1
+  share_plus: ^4.0.1
+  flutter_share: ^2.0.0
+  video_player: ^2.2.11
+  chewie: ^1.2.2
+  google_fonts: ^2.3.1
 
 dev_dependencies:
   flutter_test:
@@ -83,19 +92,20 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_launcher_icons: ^0.9.2
   flutter_app_name: ^0.1.1
+  change_app_package_name: ^1.0.0
   flutter_native_splash: ^2.0.4
 
 
 flutter_app_name:
-  name: "MOA"
+  name: "Test Posts"
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app-icon.png"
+  image_path: "assets/images/documents.png"
 
 flutter_native_splash:
-  image: assets/images/logo.png
+  image: assets/images/documents.png
   color: "ffffff"
 
 # For information on the generic Dart part of this file, see the
@@ -122,6 +132,15 @@ flutter:
           weight: 500
         - asset: assets/fonts/Cairo-Bold.ttf
           weight: 700
+    - family: Sofia
+      fonts:
+        - asset: assets/fonts/Sofia-Pro-Regular-Az.otf
+          weight: 400
+        - asset: assets/fonts/Sofia-Pro-Bold-Az.otf
+          weight: 700
+        - asset: assets/fonts/Sofia-Pro-Medium-Az.otf
+          weight: 500
+
 
 
   # To add assets to your application, add an assets section, like this:

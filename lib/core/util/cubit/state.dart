@@ -74,3 +74,19 @@ class ChangeLoaded extends AppState {}
 class PrintRequestPDF extends AppState {}
 
 class BottomChanged extends AppState {}
+
+class PostsLoaded extends AppState {}
+
+class MessageReceived extends AppState {}
+
+class Search extends AppState {}
+
+class Comment extends AppState {}
+
+class FillCommentMapState extends AppState {}
+
+class ChangeCurrentComment extends AppState {}
+
+class ChangeCurrentCommentDirection extends AppState {}
+
+class ChangeLanguageState extends AppState {}

@@ -1,4 +1,4 @@
-package com.example.moa
+package com.testposts.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,7 +10,14 @@ import 'package:moa/core/util/translation.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/features/login/presentation/pages/login_page.dart';
 
+import '../models/comment_model.dart';
 import 'cubit/cubit.dart';
+
+List<CommentModel>? commentsListData;
+
+List<CommentModel>? favListData;
+
+List<CommentModel>? disFavListData;
 
 int selectedService = 0;
 int selectedCategory = 0;
@@ -19,7 +26,7 @@ bool isEnglish = true;
 const String serverFailureMessage = 'Server Failure';
 const String cacheFailureMessage = 'Cache Failure';
 
-const String mainColor = '6d7400';
+const String mainColor = 'ADD8E6';
 const String secondary = '303C47';
 const String secondaryVariant = '6A6D78';
 
@@ -195,7 +202,7 @@ class MyDivider extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 1.0,
-      color: HexColor(liteGreyColor),
+      color: HexColor(regularGrey),
     );
   }
 }

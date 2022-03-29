@@ -1,15 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/models/government_model.dart';
 import 'package:moa/core/models/login_model.dart';
+import 'package:moa/core/models/post_model.dart';
+import 'package:moa/core/network/local/cache_helper.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/translation.dart';
+import '../../di/injection.dart';
 import '../../models/all_requests_model.dart';
+import '../../models/comment_model.dart';
 import '../../models/register_model.dart';
 import '../../network/repository.dart';
 
@@ -20,7 +26,6 @@ class AppCubit extends Cubit<AppState> {
     required Repository repository,
   })  : _repository = repository,
         super(Empty());
-
 
   static AppCubit get(context) => BlocProvider.of(context);
 
@@ -45,28 +50,34 @@ class AppCubit extends Cubit<AppState> {
   }
 
   void changeTheme() {
-    family = isRtl ? 'Cairo' : 'Cairo';
+    family = isRtl ? 'Sofia' : 'Sofia';
 
     lightTheme = ThemeData(
+      // textSelectionTheme: TextSelectionThemeData(
+      //   cursorColor: Colors.red,
+      //   selectionColor: Colors.green,
+      //   selectionHandleColor: Colors.blue,
+      // ),
       scaffoldBackgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
         systemOverlayStyle: Platform.isIOS
             ? null
-            : const SystemUiOverlayStyle(
-                statusBarColor: whiteColor,
-                statusBarIconBrightness: Brightness.dark,
+            : SystemUiOverlayStyle(
+                statusBarColor: Colors.red.shade900,
+                statusBarIconBrightness: Brightness.light,
               ),
         backgroundColor: whiteColor,
         elevation: 0.0,
-        titleSpacing: 0.0,
+        titleSpacing: 16.0,
         iconTheme: const IconThemeData(
-          color: Colors.black,
+          color: Colors.white,
           size: 20.0,
         ),
         titleTextStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
           fontFamily: family,
+          fontSize: 22.0,
         ),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -79,7 +90,7 @@ class AppCubit extends Cubit<AppState> {
           height: 1.5,
         ),
       ),
-      primarySwatch: MaterialColor(int.parse('0xff$mainColor'), color),
+      primarySwatch: Colors.red,
       textTheme: TextTheme(
         headline6: TextStyle(
           fontSize: pxToDp(20.0),
@@ -118,9 +129,9 @@ class AppCubit extends Cubit<AppState> {
           color: HexColor(secondary),
         ),
         button: TextStyle(
-          fontSize: pxToDp(16.0),
+          fontSize: pxToDp(10.0),
           fontFamily: family,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w600,
           color: whiteColor,
         ),
       ),
@@ -135,6 +146,24 @@ class AppCubit extends Cubit<AppState> {
     ));
 
     emit(LanguageLoaded());
+  }
+
+  void changeLanguage() async {
+    isRtl = !isRtl;
+    currentCommentDirection = isRtl;
+
+    sl<CacheHelper>().put('isRtl', isRtl);
+
+    String translation = await rootBundle
+        .loadString('assets/translations/${isRtl ? 'ar' : 'en'}.json');
+
+    setTranslation(
+      translation: translation,
+    );
+
+    changeTheme();
+
+    emit(ChangeLanguageState());
   }
 
   final loginEmailController = TextEditingController();
@@ -301,6 +330,377 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeLoaded());
   }
 
+  List<PostModel> posts = [];
+
+  void getPosts() {
+    textEditingController.clear();
+
+    FirebaseFirestore.instance.collection('posts').snapshots().listen(
+      (value) {
+        posts = [];
+
+        value.docs.forEach(
+          (element) {
+            posts.add(PostModel.fromJson(element.data()));
+          },
+        );
+
+        debugPrint(posts.length.toString());
+        emit(PostsLoaded());
+      },
+    );
+
+
+
+    FirebaseMessaging.onMessage.listen((event) {
+      debugPrint(event.toString());
+      debugPrint(event.data.toString());
+      emit(MessageReceived());
+    });
+  }
+
+  TextEditingController textEditingController = TextEditingController();
+
+  void search() {
+    posts = posts.where((element) => element.text.toLowerCase().contains(textEditingController.text.toLowerCase()) || element.link.toLowerCase().contains(textEditingController.text.toLowerCase())).toList();
+
+    emit(Search());
+  }
+
+  TextEditingController commentTextEditingController = TextEditingController();
+
+  void saveComment(String id) {
+    sl<CacheHelper>().get('comments').then((value) {
+      if (value != null) {
+        MainCommentModel model = MainCommentModel.fromJson(value);
+
+        CommentModel commentModel = CommentModel(
+          comment: commentTextEditingController.text,
+          id: id,
+        );
+
+        model.data.add(commentModel);
+
+        sl<CacheHelper>()
+            .put(
+          'comments',
+          model.toJson(),
+        )
+            .then((value) {
+          if(commentMap[commentModel.id] == null) {
+            List<CommentModel> c = [];
+            c.add(commentModel);
+
+            commentMap.addAll({
+              commentModel.id: c,
+            });
+          } else {
+            List<CommentModel> c = commentMap[commentModel.id]!;
+            c.add(commentModel);
+
+            commentMap.addAll({
+              commentModel.id: c,
+            });
+          }
+          // commentMap.addAll({
+          //   commentModel.id: model.data,
+          // });
+
+          print('comment inserted !!!');
+          emit(Comment());
+          commentTextEditingController.clear();
+        });
+      } else {
+          List<CommentModel> list = [];
+
+          CommentModel commentModel = CommentModel(
+            comment: commentTextEditingController.text,
+            id: id,
+          );
+
+          list.add(commentModel);
+
+          MainCommentModel model = MainCommentModel(
+            data: list,
+          );
+
+          sl<CacheHelper>()
+              .put(
+            'comments',
+            model.toJson(),
+          )
+              .then((value) {
+            // if(commentMap[commentModel.id] == null) {
+            //   List<CommentModel> c = [];
+            //   c.add(commentModel);
+            //
+            //   commentMap.addAll({
+            //     commentModel.id: c,
+            //   });
+            // } else {
+            //   List<CommentModel> c = commentMap[commentModel.id]!;
+            //   c.add(commentModel);
+            //
+            //   commentMap.addAll({
+            //     commentModel.id: c,
+            //   });
+            // }
+
+            commentMap.addAll({
+              commentModel.id: list,
+            });
+
+            print('comment inserted !!!');
+            emit(Comment());
+            commentTextEditingController.clear();
+          });
+      }
+
+      commentTextEditingController.clear();
+
+      emit(Comment());
+    });
+  }
+
+  Map<String, List<CommentModel>> commentMap = {};
+
+  void fillCommentMap() {
+    if (commentsListData != null && commentsListData!.isNotEmpty) {
+      for (var element in commentsListData!) {
+        if(commentMap[element.id] == null) {
+          List<CommentModel> c = [];
+          c.add(element);
+
+          commentMap.addAll({
+            element.id: c,
+          });
+        } else {
+          List<CommentModel> c = commentMap[element.id]!;
+          c.add(element);
+
+          commentMap.addAll({
+            element.id: c,
+          });
+        }
+      }
+
+      emit(FillCommentMapState());
+    }
+  }
+
+  void saveFav(String id) {
+    sl<CacheHelper>().get('fav').then((value) {
+      if (value != null) {
+        MainCommentModel model = MainCommentModel.fromJson(value);
+
+        CommentModel commentModel = CommentModel(
+          comment: 'true',
+          id: id,
+        );
+
+        model.data.add(commentModel);
+
+        sl<CacheHelper>()
+            .put(
+          'fav',
+          model.toJson(),
+        )
+            .then((value) {
+
+          favMap.addAll({
+            commentModel.id: commentModel,
+          });
+
+          print('fav inserted !!!');
+          emit(Comment());
+        });
+      } else {
+        List<CommentModel> list = [];
+
+        CommentModel commentModel = CommentModel(
+          comment: 'true',
+          id: id,
+        );
+
+        list.add(commentModel);
+
+        MainCommentModel model = MainCommentModel(
+          data: list,
+        );
+
+        sl<CacheHelper>()
+            .put(
+          'fav',
+          model.toJson(),
+        )
+            .then((value) {
+          favMap.addAll({
+            commentModel.id: commentModel,
+          });
+
+          print('fav inserted !!!');
+          emit(Comment());
+        });
+      }
+
+      emit(Comment());
+    });
+  }
+
+  void removeFav(String id) {
+    sl<CacheHelper>().get('fav').then((value) {
+        List<CommentModel> list = [];
+
+        list.removeWhere((element) => element.id == id);
+
+        MainCommentModel model = MainCommentModel(
+          data: list,
+        );
+
+        sl<CacheHelper>()
+            .put(
+          'fav',
+          model.toJson(),
+        )
+            .then((value) {
+          favMap.removeWhere((key, value) => key == id);
+
+          print('fav removed !!!');
+          emit(Comment());
+        });
+
+      emit(Comment());
+    });
+  }
+
+  Map<String, CommentModel> favMap = {};
+
+  void fillFavMap() {
+    if (favListData != null && favListData!.isNotEmpty) {
+      for (var element in favListData!) {
+        favMap.addAll({
+          element.id: element,
+        });
+      }
+
+      emit(FillCommentMapState());
+    }
+  }
+
+  void saveDisFav(String id) {
+    sl<CacheHelper>().get('disFav').then((value) {
+      if (value != null) {
+        MainCommentModel model = MainCommentModel.fromJson(value);
+
+        CommentModel commentModel = CommentModel(
+          comment: 'true',
+          id: id,
+        );
+
+        model.data.add(commentModel);
+
+        sl<CacheHelper>()
+            .put(
+          'disFav',
+          model.toJson(),
+        )
+            .then((value) {
+
+          disFavMap.addAll({
+            commentModel.id: commentModel,
+          });
+
+          print('disFav inserted !!!');
+          emit(Comment());
+        });
+      } else {
+        List<CommentModel> list = [];
+
+        CommentModel commentModel = CommentModel(
+          comment: 'true',
+          id: id,
+        );
+
+        list.add(commentModel);
+
+        MainCommentModel model = MainCommentModel(
+          data: list,
+        );
+
+        sl<CacheHelper>()
+            .put(
+          'disFav',
+          model.toJson(),
+        )
+            .then((value) {
+          disFavMap.addAll({
+            commentModel.id: commentModel,
+          });
+
+          print('disFav inserted !!!');
+          emit(Comment());
+        });
+      }
+
+      emit(Comment());
+    });
+  }
+
+  void removeDisFav(String id) {
+    sl<CacheHelper>().get('disFav').then((value) {
+      List<CommentModel> list = [];
+
+      list.removeWhere((element) => element.id == id);
+
+      MainCommentModel model = MainCommentModel(
+        data: list,
+      );
+
+      sl<CacheHelper>()
+          .put(
+        'disFav',
+        model.toJson(),
+      )
+          .then((value) {
+        disFavMap.removeWhere((key, value) => key == id);
+
+        print('disFav removed !!!');
+        emit(Comment());
+      });
+
+      emit(Comment());
+    });
+  }
+
+  Map<String, CommentModel> disFavMap = {};
+
+  void fillDisFavMap() {
+    if (disFavListData != null && disFavListData!.isNotEmpty) {
+      for (var element in disFavListData!) {
+        disFavMap.addAll({
+          element.id: element,
+        });
+      }
+
+      emit(FillCommentMapState());
+    }
+  }
+
+  int currentComment = -1;
+
+  void changeComment(int value) {
+    currentComment = value;
+
+    emit(ChangeCurrentComment());
+  }
+
+  bool currentCommentDirection = false;
+
+  void changeCommentDirection(bool value) {
+    currentCommentDirection = value;
+
+    emit(ChangeCurrentCommentDirection());
+  }
 //   Future<void> _createPDF() async {
 //     PdfDocument document = PdfDocument();
 //     document.pages.add();
@@ -313,46 +713,43 @@ class AppCubit extends Cubit<AppState> {
 //     emit(PrintRequestPDF());
 // }
 
-
-
-
-  // Future<void> printRequestPDF() async {
-  //   final pdf = pw.Document();
-  //
-  //   // pdf.addPage(
-  //   //   pw.Page(
-  //   //     build: (pw.Context context) => pw.Center(
-  //   //       child: pw.Text('Hello World!',
-  //   //       ),
-  //   //     ),
-  //   //   ),
-  //   // );
-  //
-  //   // final Uint8List fontData = File('Cairo-Regular.ttf').readAsBytesSync();
-  //   // final ttf = pw.Font.ttf(fontData.buffer.asByteData());
-  //   //
-  //   // pdf.addPage(pw.Page(
-  //   //     pageFormat: PdfPageFormat.a4,
-  //   //     build: (pw.Context context) {
-  //   //       return pw.Center(
-  //   //         child: pw.Text('Hello World', style: pw.TextStyle(font: ttf, fontSize: 40)),
-  //   //       ); // Center
-  //   //     }));
-  //
-  //   final font = await PdfGoogleFonts.nunitoExtraLight();
-  //
-  //   pdf.addPage(pw.Page(
-  //       pageFormat: PdfPageFormat.a4,
-  //       build: (pw.Context context) {
-  //         return pw.Center(
-  //           child: pw.Text('Hello World', style: pw.TextStyle(font: font, fontSize: 40)),
-  //         ); // Center
-  //       }));
-  //
-  //
-  //   final file = File('example.pdf');
-  //   await file.writeAsBytes(await pdf.save());
-  //
-  //   emit(PrintRequestPDF());
-  // }
+// Future<void> printRequestPDF() async {
+//   final pdf = pw.Document();
+//
+//   // pdf.addPage(
+//   //   pw.Page(
+//   //     build: (pw.Context context) => pw.Center(
+//   //       child: pw.Text('Hello World!',
+//   //       ),
+//   //     ),
+//   //   ),
+//   // );
+//
+//   // final Uint8List fontData = File('Cairo-Regular.ttf').readAsBytesSync();
+//   // final ttf = pw.Font.ttf(fontData.buffer.asByteData());
+//   //
+//   // pdf.addPage(pw.Page(
+//   //     pageFormat: PdfPageFormat.a4,
+//   //     build: (pw.Context context) {
+//   //       return pw.Center(
+//   //         child: pw.Text('Hello World', style: pw.TextStyle(font: ttf, fontSize: 40)),
+//   //       ); // Center
+//   //     }));
+//
+//   final font = await PdfGoogleFonts.nunitoExtraLight();
+//
+//   pdf.addPage(pw.Page(
+//       pageFormat: PdfPageFormat.a4,
+//       build: (pw.Context context) {
+//         return pw.Center(
+//           child: pw.Text('Hello World', style: pw.TextStyle(font: font, fontSize: 40)),
+//         ); // Center
+//       }));
+//
+//
+//   final file = File('example.pdf');
+//   await file.writeAsBytes(await pdf.save());
+//
+//   emit(PrintRequestPDF());
+// }
 }

@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "190746391202",
+    "project_id": "taxi-app-335615",
+    "storage_bucket": "taxi-app-335615.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190746391202:android:710009efd808ea41269dfb",
+        "android_client_info": {
+          "package_name": "com.taxitime.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190746391202-suofmg18htg8fvo87kma97nmhotkqiiu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyThoOinHHC-2fEdg72FIjrk5l9HNWDCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190746391202-suofmg18htg8fvo87kma97nmhotkqiiu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "190746391202-16kajpmgi2u7fubrk2tr2u9bdmu35ejq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taxitimedriver.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190746391202:android:9bafda2e12f227b7269dfb",
+        "android_client_info": {
+          "package_name": "com.taxitimedriver.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190746391202-suofmg18htg8fvo87kma97nmhotkqiiu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyThoOinHHC-2fEdg72FIjrk5l9HNWDCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190746391202-suofmg18htg8fvo87kma97nmhotkqiiu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "190746391202-16kajpmgi2u7fubrk2tr2u9bdmu35ejq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taxitimedriver.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190746391202:android:d7e51ebd28a1da3e269dfb",
+        "android_client_info": {
+          "package_name": "com.testposts.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190746391202-suofmg18htg8fvo87kma97nmhotkqiiu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyThoOinHHC-2fEdg72FIjrk5l9HNWDCE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190746391202-suofmg18htg8fvo87kma97nmhotkqiiu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "190746391202-16kajpmgi2u7fubrk2tr2u9bdmu35ejq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taxitimedriver.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

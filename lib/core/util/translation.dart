@@ -44,7 +44,11 @@ class TranslationModel {
 
   late String loginError;
 
+  late String addComment;
+
   TranslationModel.fromJson(Map<String, dynamic> json) {
+    addComment = json['addComment'];
+
     loginError = json['loginError'];
 
     logoutConfirmation = json['logoutConfirmation'];
@@ -93,6 +97,8 @@ class TranslationModel {
   }
 
   Map toJson() => {
+        'addComment': addComment,
+
         'loginError': loginError,
 
         'logoutConfirmation': logoutConfirmation,
