@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,12 +25,61 @@ void main() async {
 
   bool isRtl = true;
 
+  var s = {
+    "to" : "/topics/DE_17",
+    "notification": {
+      "title": "notification title",
+      "body": "notification body",
+      "sound": "default"
+    },
+    "android": {
+      "priority": "HIGH",
+      "notification": {
+        "notification_priority": "PRIORITY_MAX",
+        "sound": "default",
+        "default_sound": true,
+        "default_vibrate_timings": true,
+        "default_light_settings": true
+      }
+    },
+    "data": {
+      "id": "POST_ID",
+      "click_action": "FLUTTER_NOTIFICATION_CLICK"
+    }
+  };
+
+  debugPrintFullText(s.toString());
+
   String translation = await rootBundle
       .loadString('assets/translations/${isRtl ? 'ar' : 'en'}.json');
 
   token = await sl<CacheHelper>().get('token');
 
   debugPrintFullText('My Current Token => $token');
+
+  await Firebase.initializeApp();
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  FirebaseMessaging.instance.getToken().then((value) {
+    debugPrintFullText('My Current Token => $value');
+  });
+
+  FirebaseMessaging.instance.subscribeToTopic('DE_17');
+
+  FirebaseMessaging.onMessage.listen((message) {
+    debugPrintFullText('Message => $message');
+  });
+
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
   runApp(MyApp(
     token: token,

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "620993084520",
+    "project_id": "hr-system-43b5d",
+    "storage_bucket": "hr-system-43b5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620993084520:android:41fd6a457b85637a1e4fdd",
+        "android_client_info": {
+          "package_name": "com.example.moa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620993084520-4u98n4avfne3hk4tl3ivnjis6nh29b2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQlR2y8BL2siZblMjrGAg8vZlApGGBOPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620993084520-4u98n4avfne3hk4tl3ivnjis6nh29b2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
