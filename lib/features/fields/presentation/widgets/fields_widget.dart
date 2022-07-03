@@ -71,7 +71,7 @@ class FieldsWidget extends StatelessWidget {
                       itemCount: AppCubit.get(context).requiredFieldsMap.length,),
                     space40Vertical(context),
                     MyButton(
-                      isLoading: state is CompanyDomainLoading,
+                      isLoading: state is UserLoginLoading,
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());

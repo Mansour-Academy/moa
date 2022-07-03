@@ -394,6 +394,45 @@ class AppCubit extends Cubit<AppState> {
     );
   }
 
+  int selectedShareIndex = -1;
+
+  void sharePost({
+    required int postId,
+    required int index,
+    required String source,
+  }) async {
+    selectedShareIndex = index;
+
+    emit(ShareLoading(
+      postId: postId,
+    ));
+
+    final result = await _repository.sharePost(
+      postId: postId,
+      source: source,
+    );
+
+    result.fold(
+          (failure) {
+        selectedShareIndex = -1;
+
+        emit(
+          ShareError(
+            message: failure,
+          ),
+        );
+      },
+          (data) {
+        selectedShareIndex = -1;
+
+        simpleModel = data;
+        posts[index].isShared = true;
+
+        emit(ShareSuccess());
+      },
+    );
+  }
+
   int selectedCommentIndex = -1;
 
   void createNewComment({

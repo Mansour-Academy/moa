@@ -45,6 +45,11 @@ abstract class Repository {
     required int postId,
   });
 
+  Future<Either<String, SimpleModel>> sharePost({
+    required int postId,
+    required String source,
+  });
+
   Future<Either<String, SimpleModel>> addComment({
     required int postId,
     required String comment,
@@ -229,6 +234,35 @@ class RepoImplementation extends Repository {
           token: token,
           query: {
             'postId': postId,
+          },
+        );
+
+        return SimpleModel.fromJson(f.data);
+      },
+      onServerError: (exception) async {
+        debugPrint(exception.message);
+        debugPrint(exception.code.toString());
+        debugPrint(exception.error);
+        // final f = exception.error;
+        // final msg = _handleErrorMessages(f: f['message'],);
+        return exception.message;
+      },
+    );
+  }
+
+  @override
+  Future<Either<String, SimpleModel>> sharePost({
+    required int postId,
+    required String source,
+  }) async {
+    return _basicErrorHandling<SimpleModel>(
+      onSuccess: () async {
+        final Response f = await dioHelper.post(
+          url: sharePostUrl,
+          token: token,
+          query: {
+            'postId': postId,
+            'source': source,
           },
         );
 

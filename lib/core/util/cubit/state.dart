@@ -154,3 +154,21 @@ class CompanyDomainError extends AppState {
     required this.message,
   });
 }
+
+class ShareLoading extends AppState {
+  final int postId;
+
+  ShareLoading({
+    required this.postId,
+  });
+}
+
+class ShareSuccess extends AppState {}
+
+class ShareError extends AppState {
+  final String message;
+
+  ShareError({
+    required this.message,
+  });
+}

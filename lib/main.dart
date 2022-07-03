@@ -233,8 +233,8 @@ class MyApp extends StatelessWidget {
             themeMode: ThemeMode.light,
             theme: AppCubit.get(context).lightTheme,
             // home: const TestPage(),
-            home: const RegisterPage(),
-            // home: token != null ? const TestPage() : const RegisterPage(),
+            // home: const RegisterPage(),
+            home: token != null ? const TestPage() : const RegisterPage(),
           );
         },
       ),

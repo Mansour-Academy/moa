@@ -1,4 +1,5 @@
 import 'package:moa/core/models/comment_model.dart';
+import 'package:moa/core/network/remote/api_endpoints.dart';
 
 class PostModel {
   final int id;
@@ -88,7 +89,7 @@ class PostMediaModel {
   factory PostMediaModel.fromJson(Map<String, dynamic> json) {
     return PostMediaModel(
       id: json['id'] ?? 0,
-      mediaPath: json['mediaPath'] ?? '',
+      mediaPath: 'https://agre-mobile.it-blocks.com/Post2Teams${json['mediaPath']}',
       mediaTypeId: json['mediaTypeId'] ?? 0,
     );
   }
