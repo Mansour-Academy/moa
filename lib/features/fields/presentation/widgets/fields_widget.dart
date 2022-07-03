@@ -7,33 +7,29 @@ import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/widgets/logo.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
-import 'package:moa/features/fields/presentation/pages/fields_page.dart';
 import 'package:moa/features/test/presentation/pages/test_page.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/local/cache_helper.dart';
 import '../../../../core/network/remote/api_endpoints.dart';
 
-class RegisterWidget extends StatelessWidget {
+class FieldsWidget extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
 
-  RegisterWidget({Key? key}) : super(key: key);
+  FieldsWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppState>(
       listener: (context, state) {
-        if (state is CompanyDomainError) {
-          Fluttertoast.showToast(
-            msg: state.message,
-          );
+        if(state is UserLoginError) {
+          Fluttertoast.showToast(msg: state.message,);
         }
 
-        if (state is CompanyDomainSuccess) {
-          navigateTo(
-            context,
-            const FieldsPage(),
-          );
+        if(state is UserLoginSuccess) {
+          sl<CacheHelper>().put('token', state.token);
+          token = state.token;
+          navigateAndFinish(context, const TestPage());
         }
       },
       builder: (context, state) {
@@ -53,27 +49,36 @@ class RegisterWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      appTranslation(context).companyDomainHead,
-                      style: Theme.of(context).textTheme.headline6,
+                      appTranslation(context).fieldsHead,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline6,
                     ),
                     space40Vertical(context),
-                    MyForm(
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => MyForm(
                       isPassword: false,
                       type: TextInputType.text,
-                      error: appTranslation(context).companyDomainError,
-                      controller: AppCubit.get(context).companyDomainController,
-                      label: appTranslation(context).companyDomain,
+                      error: appTranslation(context).fieldsError + AppCubit.get(context).requiredFieldsMap.keys.toList()[index].toLowerCase(),
+                      controller: AppCubit.get(context).requiredFieldsMap.values.toList()[index],
+                      label: AppCubit.get(context).requiredFieldsMap.keys.toList()[index],
                     ),
+                      separatorBuilder: (context, index) =>
+                          space20Vertical(context),
+                      itemCount: AppCubit.get(context).requiredFieldsMap.length,),
                     space40Vertical(context),
                     MyButton(
                       isLoading: state is CompanyDomainLoading,
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           FocusScope.of(context).requestFocus(FocusNode());
-                          AppCubit.get(context).companyDomain();
+                          AppCubit.get(context).userLogin();
                         }
                       },
-                      text: appTranslation(context).next,
+                      text: appTranslation(context).loginHead,
                     ),
                   ],
                 ),

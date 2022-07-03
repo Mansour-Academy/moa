@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moa/core/util/constants.dart';
@@ -9,12 +7,11 @@ import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/widgets/logo.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
 import 'package:moa/core/util/widgets/my_form.dart';
-import 'package:moa/features/register/presentation/pages/register_page.dart';
+import 'package:moa/features/test/presentation/pages/test_page.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/network/local/cache_helper.dart';
 import '../../../../core/network/remote/api_endpoints.dart';
-import '../../../start/presentation/pages/start_page.dart';
 
 class LoginWidget extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
@@ -32,7 +29,7 @@ class LoginWidget extends StatelessWidget {
         if(state is UserLoginSuccess) {
           sl<CacheHelper>().put('token', state.token);
           token = state.token;
-          navigateAndFinish(context, const StartPage());
+          navigateAndFinish(context, const TestPage());
         }
       },
       builder: (context, state) {
@@ -51,17 +48,9 @@ class LoginWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
-                      alignment: AlignmentDirectional.center,
-                      child: Column(
-                        children: [
-                          const AppLogo(),
-                          Text(
-                            appTranslation(context).loginHead,
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ],
-                      ),
+                    Text(
+                      appTranslation(context).loginHead,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     space40Vertical(context),
                     MyForm(
@@ -100,11 +89,11 @@ class LoginWidget extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            AppCubit.get(context).getAllGovernments();
-                            navigateTo(
-                              context,
-                              const RegisterPage(),
-                            );
+                            // AppCubit.get(context).getAllGovernments();
+                            // navigateTo(
+                            //   context,
+                            //   const RegisterPage(),
+                            // );
                           },
                           child: Text(
                             appTranslation(context).registerNow,

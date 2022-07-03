@@ -42,5 +42,13 @@
   "yes": "نعم",
   "loginError": "البريد الإلكتروني أو كلمة المرور غير صحيحين٬ برجاء التأكد و إعادة المحاولة",
 
-  "addComment": "أضف تعليق"
+  "addComment": "أضف تعليق",
+
+  "companyDomainHead": "Add company domain",
+  "companyDomain": "Company Domain",
+  "companyDomainError": "please enter company domain",
+  "next": "Next",
+
+  "fieldsHead": "Complete your data to login",
+  "fieldsError": "please enter your "
 }

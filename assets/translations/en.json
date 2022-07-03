@@ -1,5 +1,5 @@
 {
-  "loginHead": "User Login",
+  "loginHead": "Login",
   "emailAddress": "Email Address",
   "password": "Password",
   "emailAddressError": "please enter your email address",
@@ -39,5 +39,13 @@
   "yes": "Yes",
   "loginError": "email or password is wrong, please make sure and try again",
 
-  "addComment": "Add comment"
+  "addComment": "Add comment",
+
+  "companyDomainHead": "Enter company domain",
+  "companyDomain": "Company Domain",
+  "companyDomainError": "please enter company domain",
+  "next": "Next",
+
+  "fieldsHead": "Complete your data to login",
+  "fieldsError": "please enter your "
 }

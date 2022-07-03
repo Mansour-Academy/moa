@@ -46,7 +46,23 @@ class TranslationModel {
 
   late String addComment;
 
+  late String companyDomainHead;
+  late String companyDomain;
+  late String companyDomainError;
+  late String next;
+
+  late String fieldsHead;
+  late String fieldsError;
+
   TranslationModel.fromJson(Map<String, dynamic> json) {
+    fieldsHead = json['fieldsHead'];
+    fieldsError = json['fieldsError'];
+
+    next = json['next'];
+    companyDomainError = json['companyDomainError'];
+    companyDomainHead = json['companyDomainHead'];
+    companyDomain = json['companyDomain'];
+
     addComment = json['addComment'];
 
     loginError = json['loginError'];
@@ -97,6 +113,11 @@ class TranslationModel {
   }
 
   Map toJson() => {
+        'next': next,
+        'companyDomainError': companyDomainError,
+        'companyDomainHead': companyDomainHead,
+        'companyDomain': companyDomain,
+
         'addComment': addComment,
 
         'loginError': loginError,

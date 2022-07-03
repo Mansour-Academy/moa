@@ -1,16 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/widgets/hide_keyboard_page.dart';
 import 'package:moa/core/util/widgets/main_scaffold.dart';
-import 'package:moa/features/login/presentation/widgets/login_widget.dart';
-import 'package:moa/features/test/presentation/pages/search_page.dart';
 
 import '../../../../core/util/cubit/state.dart';
 import '../widgets/test_widget.dart';
@@ -42,7 +36,7 @@ class _TestPageState extends State<TestPage> {
           actions: [
             IconButton(
               onPressed: () {
-                navigateTo(context, const SearchPage(),);
+                //navigateTo(context, const SearchPage(),);
               },
               icon: const Icon(
                 FontAwesomeIcons.search,

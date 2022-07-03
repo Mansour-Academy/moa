@@ -57,25 +57,23 @@ class UserRegisterError extends AppState {
   });
 }
 
-class AllRequestedLoading extends AppState {}
-
-class AllRequestedSuccess extends AppState {}
-
-class AllRequestedError extends AppState {
-  final String message;
-
-  AllRequestedError({
-    required this.message,
-  });
-}
-
 class ChangeLoaded extends AppState {}
 
 class PrintRequestPDF extends AppState {}
 
 class BottomChanged extends AppState {}
 
-class PostsLoaded extends AppState {}
+class AllPostsLoading extends AppState {}
+
+class AllPostsSuccess extends AppState {}
+
+class AllPostsError extends AppState {
+  final String message;
+
+  AllPostsError({
+    required this.message,
+  });
+}
 
 class MessageReceived extends AppState {}
 
@@ -90,3 +88,69 @@ class ChangeCurrentComment extends AppState {}
 class ChangeCurrentCommentDirection extends AppState {}
 
 class ChangeLanguageState extends AppState {}
+
+class LikeActionLoading extends AppState {
+  final int postId;
+
+  LikeActionLoading({
+    required this.postId,
+  });
+}
+
+class LikeActionSuccess extends AppState {}
+
+class LikeActionError extends AppState {
+  final String message;
+
+  LikeActionError({
+    required this.message,
+  });
+}
+
+class DisLikeActionLoading extends AppState {
+  final int postId;
+
+  DisLikeActionLoading({
+    required this.postId,
+  });
+}
+
+class DisLikeActionSuccess extends AppState {}
+
+class DisLikeActionError extends AppState {
+  final String message;
+
+  DisLikeActionError({
+    required this.message,
+  });
+}
+
+class CommentActionLoading extends AppState {
+  final int postId;
+
+  CommentActionLoading({
+    required this.postId,
+  });
+}
+
+class CommentActionSuccess extends AppState {}
+
+class CommentActionError extends AppState {
+  final String message;
+
+  CommentActionError({
+    required this.message,
+  });
+}
+
+class CompanyDomainLoading extends AppState {}
+
+class CompanyDomainSuccess extends AppState {}
+
+class CompanyDomainError extends AppState {
+  final String message;
+
+  CompanyDomainError({
+    required this.message,
+  });
+}

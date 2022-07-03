@@ -35,7 +35,7 @@ class DioImpl extends DioHelper {
     BaseOptions(
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
-      connectTimeout: 10000,
+      connectTimeout: 50000,
     ),
   );
 
@@ -171,9 +171,9 @@ extension on DioHelper {
 
 
         throw ServerException(
-          error: e.response!.statusMessage!,
+          error: e.response!.toString(),
           code: e.response!.statusCode!,
-          message: 'error',
+          message: e.response!.toString(),
         );
       } else {
         throw ServerException(

@@ -1,7 +1,15 @@
-const String baseUrl = 'https://agre-mobile.it-blocks.com/api/';
-const String loginUrl = 'login';
-const String registerUrl = 'Site/Register';
-const String governmentUrl = 'GetAllGovernment';
-const String requestUrl = 'GetAllRequests';
+const String baseUrl = 'https://agre-mobile.it-blocks.com/Post2Teams/api/';
+const String getPostsUrl = 'Post/GetEmployeePosts';
+const String loginUrl = 'Site/Login';
+const String companyDomainUrl = 'Site/GetCompanyRequiredFields';
 
-String? token;
+const String likeUrl = 'Post/Like';
+const String removeLikeUrl = 'Post/RemoveLike';
+
+const String dislikeUrl = 'Post/DisLike';
+const String removeDislikeUrl = 'Post/RemoveDisLike';
+
+const String commentUrl = 'Post/Comment';
+const String shareUrl = 'Post/Share';
+
+String? token = '';

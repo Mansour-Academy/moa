@@ -1,30 +1,95 @@
+import 'package:moa/core/models/comment_model.dart';
+
 class PostModel {
-  final List<String> image;
-  final String link;
-  final String text;
-  final String time;
-  final String id;
-  final String video;
+  final int id;
+  final String postComment;
+  final String userId;
+  final int companyId;
+  final String createdOn;
+  bool liked;
+  bool dislike;
+  bool isShared;
+  bool canShare;
+  List<CommentModel> comments;
+  final List<PostMediaModel> postMedias;
+  final PostStatisticsModel statistics;
 
   PostModel({
-    required this.image,
-    required this.link,
-    required this.text,
-    required this.time,
     required this.id,
-    required this.video,
+    required this.postComment,
+    required this.userId,
+    required this.companyId,
+    required this.createdOn,
+    required this.liked,
+    required this.isShared,
+    required this.comments,
+    required this.dislike,
+    required this.canShare,
+    required this.statistics,
+    required this.postMedias,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-      image: json['image'] != null ? List.from((json['image'] as List))
-          .map((e) => e.toString())
+      comments: json['comments'] != null ? List.from((json['comments'] as List))
+          .map((e) => CommentModel.fromJson(e))
           .toList() : [],
-      link: json['link'] ?? '',
-      text: json['text'] ?? '',
-      time: json['time'] ?? '',
-      video: json['video'] ?? '',
-      id: json['id'] ?? '',
+      postMedias: json['postMedias'] != null ? List.from((json['postMedias'] as List))
+          .map((e) => PostMediaModel.fromJson(e))
+          .toList() : [],
+      id: json['id'] ?? 0,
+      postComment: json['postComment'] ?? '',
+      userId: json['userId'] ?? '',
+      companyId: json['companyId'] ?? 0,
+      createdOn: json['createdOn'] ?? '',
+      liked: json['liked'] ?? false,
+      isShared: json['isShared'] ?? false,
+      dislike: json['dislike'] ?? false,
+      canShare: json['canShare'] ?? false,
+      statistics: PostStatisticsModel.fromJson(json['statistics']),
+    );
+  }
+}
+
+class PostStatisticsModel {
+  final int likes;
+  final int dislikes;
+  final int shares;
+  final int views;
+
+  PostStatisticsModel({
+    required this.likes,
+    required this.dislikes,
+    required this.shares,
+    required this.views,
+  });
+
+  factory PostStatisticsModel.fromJson(Map<String, dynamic> json) {
+    return PostStatisticsModel(
+      likes: json['likes'] ?? 0,
+      dislikes: json['dislikes'] ?? 0,
+      shares: json['shares'] ?? 0,
+      views: json['views'] ?? 0,
+    );
+  }
+}
+
+class PostMediaModel {
+  final int id;
+  final String mediaPath;
+  final int mediaTypeId;
+
+  PostMediaModel({
+    required this.id,
+    required this.mediaPath,
+    required this.mediaTypeId,
+  });
+
+  factory PostMediaModel.fromJson(Map<String, dynamic> json) {
+    return PostMediaModel(
+      id: json['id'] ?? 0,
+      mediaPath: json['mediaPath'] ?? '',
+      mediaTypeId: json['mediaTypeId'] ?? 0,
     );
   }
 }

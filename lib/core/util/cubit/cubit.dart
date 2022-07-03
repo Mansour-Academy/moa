@@ -9,7 +9,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:moa/core/models/government_model.dart';
 import 'package:moa/core/models/login_model.dart';
 import 'package:moa/core/models/post_model.dart';
+import 'package:moa/core/models/simple_model.dart';
 import 'package:moa/core/network/local/cache_helper.dart';
+import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/state.dart';
 import 'package:moa/core/util/translation.dart';
@@ -177,6 +179,8 @@ class AppCubit extends Cubit<AppState> {
   final registerPasswordController = TextEditingController();
   final registerConfirmPasswordController = TextEditingController();
 
+  final companyDomainController = TextEditingController();
+
   GovernmentModel? selectedGovernment;
 
   void changeSelectedGovernment({
@@ -217,108 +221,308 @@ class AppCubit extends Cubit<AppState> {
   void userLogin() async {
     emit(UserLoginLoading());
 
-    final result = await _repository.login(
-      email: loginEmailController.text,
-      password: loginPasswordController.text,
+    FirebaseMessaging.instance.getToken().then((value) async {
+      final result = await _repository.login(
+        companyName: companyDomainController.text,
+        firstField: requiredFieldsMap.values.toList()[0].text,
+        secondField: requiredFieldsMap.values.toList()[1].text,
+        deviceToken: value!,
+      );
+
+      result.fold(
+        (failure) {
+          emit(
+            UserLoginError(
+              message: failure,
+            ),
+          );
+        },
+        (data) {
+          loginModel = data;
+
+          emit(UserLoginSuccess(
+            token: loginModel!.token,
+          ));
+        },
+      );
+    });
+  }
+
+  SimpleModel? simpleModel;
+
+  int selectedIndex = -1;
+
+  void like({
+    required int postId,
+    required int index,
+  }) async {
+    selectedIndex = index;
+
+    emit(LikeActionLoading(
+      postId: postId,
+    ));
+
+    final result = await _repository.like(
+      postId: postId,
     );
 
     result.fold(
       (failure) {
+        selectedIndex = -1;
+
         emit(
-          UserLoginError(
+          LikeActionError(
             message: failure,
           ),
         );
       },
       (data) {
-        loginModel = data;
+        selectedIndex = -1;
 
-        emit(UserLoginSuccess(
-          token: loginModel!.token,
-        ));
+        simpleModel = data;
+        posts[index].liked = !posts[index].liked;
+
+        emit(LikeActionSuccess());
       },
     );
   }
 
-  List<GovernmentModel> governmentsList = [];
+  void removeLike({
+    required int postId,
+    required int index,
+  }) async {
+    selectedIndex = index;
 
-  void getAllGovernments() async {
-    emit(GetAllGovernmentsLoading());
+    emit(LikeActionLoading(
+      postId: postId,
+    ));
 
-    final result = await _repository.getAllGovernments();
+    final result = await _repository.removeLike(
+      postId: postId,
+    );
 
     result.fold(
       (failure) {
+        selectedIndex = -1;
+
         emit(
-          GetAllGovernmentsError(
+          LikeActionError(
             message: failure,
           ),
         );
       },
       (data) {
-        governmentsList = data;
+        selectedIndex = -1;
 
-        selectedGovernment = governmentsList[0];
+        simpleModel = data;
+        posts[index].liked = !posts[index].liked;
 
-        emit(GetAllGovernmentsSuccess());
+        emit(LikeActionSuccess());
       },
     );
   }
 
-  RegisterModel? registerModel;
+  int selectedDisLikeIndex = -1;
 
-  void userRegister() async {
-    emit(UserRegisterLoading());
+  void dislike({
+    required int postId,
+    required int index,
+  }) async {
+    selectedDisLikeIndex = index;
 
-    final result = await _repository.register(
-      name: registerFullNameController.text,
-      email: registerEmailAddressController.text,
-      mobile: registerMobileController.text,
-      nationalityId: registerIdController.text,
-      password: registerPasswordController.text,
-      cPassword: registerConfirmPasswordController.text,
-      address: registerAddressController.text,
-      governorateId: selectedGovernment!.id,
+    emit(DisLikeActionLoading(
+      postId: postId,
+    ));
+
+    final result = await _repository.dislike(
+      postId: postId,
     );
 
     result.fold(
       (failure) {
+        selectedDisLikeIndex = -1;
+
         emit(
-          UserRegisterError(
+          DisLikeActionError(
             message: failure,
           ),
         );
       },
       (data) {
-        registerModel = data;
+        selectedDisLikeIndex = -1;
 
-        emit(UserRegisterSuccess());
+        simpleModel = data;
+        posts[index].dislike = !posts[index].dislike;
+
+        emit(DisLikeActionSuccess());
       },
     );
   }
 
-  List<AllRequestsDataModel> requests = [];
+  void removeDisLike({
+    required int postId,
+    required int index,
+  }) async {
+    selectedDisLikeIndex = index;
 
-  void myRequests() async {
-    emit(AllRequestedLoading());
+    emit(DisLikeActionLoading(
+      postId: postId,
+    ));
 
-    final result = await _repository.getAllRequested();
+    final result = await _repository.removeDisLike(
+      postId: postId,
+    );
 
     result.fold(
       (failure) {
-        debugPrint(failure.toString());
+        selectedDisLikeIndex = -1;
+
         emit(
-          AllRequestedError(
+          DisLikeActionError(
             message: failure,
           ),
         );
       },
       (data) {
-        requests = data;
+        selectedDisLikeIndex = -1;
 
-        emit(AllRequestedSuccess());
+        simpleModel = data;
+        posts[index].dislike = !posts[index].dislike;
+
+        emit(DisLikeActionSuccess());
       },
     );
+  }
+
+  int selectedCommentIndex = -1;
+
+  void createNewComment({
+    required int postId,
+    required int index,
+  }) async {
+    selectedCommentIndex = index;
+
+    emit(CommentActionLoading(
+      postId: postId,
+    ));
+
+    final result = await _repository.addComment(
+      postId: postId,
+      comment: commentTextEditingController.text,
+    );
+
+    result.fold(
+      (failure) {
+        selectedCommentIndex = -1;
+
+        emit(
+          CommentActionError(
+            message: failure,
+          ),
+        );
+      },
+      (data) {
+        selectedCommentIndex = -1;
+
+        posts[index].comments.insert(
+              0,
+              CommentModel(
+                id: 0,
+                postId: postId,
+                comment: commentTextEditingController.text,
+                createdOn: DateTime.now().toString(),
+              ),
+            );
+
+        commentTextEditingController.clear();
+
+        emit(CommentActionSuccess());
+      },
+    );
+  }
+
+  //
+  // List<GovernmentModel> governmentsList = [];
+  //
+  // void getAllGovernments() async {
+  //   emit(GetAllGovernmentsLoading());
+  //
+  //   final result = await _repository.getAllGovernments();
+  //
+  //   result.fold(
+  //     (failure) {
+  //       emit(
+  //         GetAllGovernmentsError(
+  //           message: failure,
+  //         ),
+  //       );
+  //     },
+  //     (data) {
+  //       governmentsList = data;
+  //
+  //       selectedGovernment = governmentsList[0];
+  //
+  //       emit(GetAllGovernmentsSuccess());
+  //     },
+  //   );
+  // }
+  //
+  // RegisterModel? registerModel;
+  //
+  // void userRegister() async {
+  //   emit(UserRegisterLoading());
+  //
+  //   final result = await _repository.register(
+  //     name: registerFullNameController.text,
+  //     email: registerEmailAddressController.text,
+  //     mobile: registerMobileController.text,
+  //     nationalityId: registerIdController.text,
+  //     password: registerPasswordController.text,
+  //     cPassword: registerConfirmPasswordController.text,
+  //     address: registerAddressController.text,
+  //     governorateId: selectedGovernment!.id,
+  //   );
+  //
+  //   result.fold(
+  //     (failure) {
+  //       emit(
+  //         UserRegisterError(
+  //           message: failure,
+  //         ),
+  //       );
+  //     },
+  //     (data) {
+  //       registerModel = data;
+  //
+  //       emit(UserRegisterSuccess());
+  //     },
+  //   );
+  // }
+
+  List<PostModel> posts = [];
+
+  void getPosts() async {
+    if (token!.isNotEmpty) {
+      emit(AllPostsLoading());
+
+      final result = await _repository.getPosts();
+
+      result.fold(
+        (failure) {
+          debugPrint(failure.toString());
+          emit(
+            AllPostsError(
+              message: failure,
+            ),
+          );
+        },
+        (data) {
+          posts = data;
+
+          emit(AllPostsSuccess());
+        },
+      );
+    }
   }
 
   bool isLoaded = false;
@@ -330,361 +534,332 @@ class AppCubit extends Cubit<AppState> {
     emit(ChangeLoaded());
   }
 
-  List<PostModel> posts = [];
-
-  void getPosts() {
-    textEditingController.clear();
-
-    FirebaseFirestore.instance.collection('posts').snapshots().listen(
-      (value) {
-        posts = [];
-
-        value.docs.forEach(
-          (element) {
-            posts.add(PostModel.fromJson(element.data()));
-          },
-        );
-
-        debugPrint(posts.length.toString());
-        emit(PostsLoaded());
-      },
-    );
-
-
-
-    FirebaseMessaging.onMessage.listen((event) {
-      debugPrint(event.toString());
-      debugPrint(event.data.toString());
-      emit(MessageReceived());
-    });
-  }
-
   TextEditingController textEditingController = TextEditingController();
 
-  void search() {
-    posts = posts.where((element) => element.text.toLowerCase().contains(textEditingController.text.toLowerCase()) || element.link.toLowerCase().contains(textEditingController.text.toLowerCase())).toList();
-
-    emit(Search());
-  }
+  // void search() {
+  //   posts = posts.where((element) => element.text.toLowerCase().contains(textEditingController.text.toLowerCase()) || element.link.toLowerCase().contains(textEditingController.text.toLowerCase())).toList();
+  //
+  //   emit(Search());
+  // }
 
   TextEditingController commentTextEditingController = TextEditingController();
 
-  void saveComment(String id) {
-    sl<CacheHelper>().get('comments').then((value) {
-      if (value != null) {
-        MainCommentModel model = MainCommentModel.fromJson(value);
-
-        CommentModel commentModel = CommentModel(
-          comment: commentTextEditingController.text,
-          id: id,
-        );
-
-        model.data.add(commentModel);
-
-        sl<CacheHelper>()
-            .put(
-          'comments',
-          model.toJson(),
-        )
-            .then((value) {
-          if(commentMap[commentModel.id] == null) {
-            List<CommentModel> c = [];
-            c.add(commentModel);
-
-            commentMap.addAll({
-              commentModel.id: c,
-            });
-          } else {
-            List<CommentModel> c = commentMap[commentModel.id]!;
-            c.add(commentModel);
-
-            commentMap.addAll({
-              commentModel.id: c,
-            });
-          }
-          // commentMap.addAll({
-          //   commentModel.id: model.data,
-          // });
-
-          print('comment inserted !!!');
-          emit(Comment());
-          commentTextEditingController.clear();
-        });
-      } else {
-          List<CommentModel> list = [];
-
-          CommentModel commentModel = CommentModel(
-            comment: commentTextEditingController.text,
-            id: id,
-          );
-
-          list.add(commentModel);
-
-          MainCommentModel model = MainCommentModel(
-            data: list,
-          );
-
-          sl<CacheHelper>()
-              .put(
-            'comments',
-            model.toJson(),
-          )
-              .then((value) {
-            // if(commentMap[commentModel.id] == null) {
-            //   List<CommentModel> c = [];
-            //   c.add(commentModel);
-            //
-            //   commentMap.addAll({
-            //     commentModel.id: c,
-            //   });
-            // } else {
-            //   List<CommentModel> c = commentMap[commentModel.id]!;
-            //   c.add(commentModel);
-            //
-            //   commentMap.addAll({
-            //     commentModel.id: c,
-            //   });
-            // }
-
-            commentMap.addAll({
-              commentModel.id: list,
-            });
-
-            print('comment inserted !!!');
-            emit(Comment());
-            commentTextEditingController.clear();
-          });
-      }
-
-      commentTextEditingController.clear();
-
-      emit(Comment());
-    });
-  }
+  // void saveComment(String id) {
+  //   sl<CacheHelper>().get('comments').then((value) {
+  //     if (value != null) {
+  //       MainCommentModel model = MainCommentModel.fromJson(value);
+  //
+  //       CommentModel commentModel = CommentModel(
+  //         comment: commentTextEditingController.text,
+  //         id: id,
+  //       );
+  //
+  //       model.data.add(commentModel);
+  //
+  //       sl<CacheHelper>()
+  //           .put(
+  //         'comments',
+  //         model.toJson(),
+  //       )
+  //           .then((value) {
+  //         if(commentMap[commentModel.id] == null) {
+  //           List<CommentModel> c = [];
+  //           c.add(commentModel);
+  //
+  //           commentMap.addAll({
+  //             commentModel.id: c,
+  //           });
+  //         } else {
+  //           List<CommentModel> c = commentMap[commentModel.id]!;
+  //           c.add(commentModel);
+  //
+  //           commentMap.addAll({
+  //             commentModel.id: c,
+  //           });
+  //         }
+  //         // commentMap.addAll({
+  //         //   commentModel.id: model.data,
+  //         // });
+  //
+  //         print('comment inserted !!!');
+  //         emit(Comment());
+  //         commentTextEditingController.clear();
+  //       });
+  //     } else {
+  //         List<CommentModel> list = [];
+  //
+  //         CommentModel commentModel = CommentModel(
+  //           comment: commentTextEditingController.text,
+  //           id: id,
+  //         );
+  //
+  //         list.add(commentModel);
+  //
+  //         MainCommentModel model = MainCommentModel(
+  //           data: list,
+  //         );
+  //
+  //         sl<CacheHelper>()
+  //             .put(
+  //           'comments',
+  //           model.toJson(),
+  //         )
+  //             .then((value) {
+  //           // if(commentMap[commentModel.id] == null) {
+  //           //   List<CommentModel> c = [];
+  //           //   c.add(commentModel);
+  //           //
+  //           //   commentMap.addAll({
+  //           //     commentModel.id: c,
+  //           //   });
+  //           // } else {
+  //           //   List<CommentModel> c = commentMap[commentModel.id]!;
+  //           //   c.add(commentModel);
+  //           //
+  //           //   commentMap.addAll({
+  //           //     commentModel.id: c,
+  //           //   });
+  //           // }
+  //
+  //           commentMap.addAll({
+  //             commentModel.id: list,
+  //           });
+  //
+  //           print('comment inserted !!!');
+  //           emit(Comment());
+  //           commentTextEditingController.clear();
+  //         });
+  //     }
+  //
+  //     commentTextEditingController.clear();
+  //
+  //     emit(Comment());
+  //   });
+  // }
 
   Map<String, List<CommentModel>> commentMap = {};
 
-  void fillCommentMap() {
-    if (commentsListData != null && commentsListData!.isNotEmpty) {
-      for (var element in commentsListData!) {
-        if(commentMap[element.id] == null) {
-          List<CommentModel> c = [];
-          c.add(element);
-
-          commentMap.addAll({
-            element.id: c,
-          });
-        } else {
-          List<CommentModel> c = commentMap[element.id]!;
-          c.add(element);
-
-          commentMap.addAll({
-            element.id: c,
-          });
-        }
-      }
-
-      emit(FillCommentMapState());
-    }
-  }
-
-  void saveFav(String id) {
-    sl<CacheHelper>().get('fav').then((value) {
-      if (value != null) {
-        MainCommentModel model = MainCommentModel.fromJson(value);
-
-        CommentModel commentModel = CommentModel(
-          comment: 'true',
-          id: id,
-        );
-
-        model.data.add(commentModel);
-
-        sl<CacheHelper>()
-            .put(
-          'fav',
-          model.toJson(),
-        )
-            .then((value) {
-
-          favMap.addAll({
-            commentModel.id: commentModel,
-          });
-
-          print('fav inserted !!!');
-          emit(Comment());
-        });
-      } else {
-        List<CommentModel> list = [];
-
-        CommentModel commentModel = CommentModel(
-          comment: 'true',
-          id: id,
-        );
-
-        list.add(commentModel);
-
-        MainCommentModel model = MainCommentModel(
-          data: list,
-        );
-
-        sl<CacheHelper>()
-            .put(
-          'fav',
-          model.toJson(),
-        )
-            .then((value) {
-          favMap.addAll({
-            commentModel.id: commentModel,
-          });
-
-          print('fav inserted !!!');
-          emit(Comment());
-        });
-      }
-
-      emit(Comment());
-    });
-  }
-
-  void removeFav(String id) {
-    sl<CacheHelper>().get('fav').then((value) {
-        List<CommentModel> list = [];
-
-        list.removeWhere((element) => element.id == id);
-
-        MainCommentModel model = MainCommentModel(
-          data: list,
-        );
-
-        sl<CacheHelper>()
-            .put(
-          'fav',
-          model.toJson(),
-        )
-            .then((value) {
-          favMap.removeWhere((key, value) => key == id);
-
-          print('fav removed !!!');
-          emit(Comment());
-        });
-
-      emit(Comment());
-    });
-  }
+  // void fillCommentMap() {
+  //   if (commentsListData != null && commentsListData!.isNotEmpty) {
+  //     for (var element in commentsListData!) {
+  //       if(commentMap[element.id] == null) {
+  //         List<CommentModel> c = [];
+  //         c.add(element);
+  //
+  //         commentMap.addAll({
+  //           element.id: c,
+  //         });
+  //       } else {
+  //         List<CommentModel> c = commentMap[element.id]!;
+  //         c.add(element);
+  //
+  //         commentMap.addAll({
+  //           element.id: c,
+  //         });
+  //       }
+  //     }
+  //
+  //     emit(FillCommentMapState());
+  //   }
+  // }
+  //
+  // void saveFav(String id) {
+  //   sl<CacheHelper>().get('fav').then((value) {
+  //     if (value != null) {
+  //       MainCommentModel model = MainCommentModel.fromJson(value);
+  //
+  //       CommentModel commentModel = CommentModel(
+  //         comment: 'true',
+  //         id: id,
+  //       );
+  //
+  //       model.data.add(commentModel);
+  //
+  //       sl<CacheHelper>()
+  //           .put(
+  //         'fav',
+  //         model.toJson(),
+  //       )
+  //           .then((value) {
+  //
+  //         favMap.addAll({
+  //           commentModel.id: commentModel,
+  //         });
+  //
+  //         print('fav inserted !!!');
+  //         emit(Comment());
+  //       });
+  //     } else {
+  //       List<CommentModel> list = [];
+  //
+  //       CommentModel commentModel = CommentModel(
+  //         comment: 'true',
+  //         id: id,
+  //       );
+  //
+  //       list.add(commentModel);
+  //
+  //       MainCommentModel model = MainCommentModel(
+  //         data: list,
+  //       );
+  //
+  //       sl<CacheHelper>()
+  //           .put(
+  //         'fav',
+  //         model.toJson(),
+  //       )
+  //           .then((value) {
+  //         favMap.addAll({
+  //           commentModel.id: commentModel,
+  //         });
+  //
+  //         print('fav inserted !!!');
+  //         emit(Comment());
+  //       });
+  //     }
+  //
+  //     emit(Comment());
+  //   });
+  // }
+  //
+  // void removeFav(String id) {
+  //   sl<CacheHelper>().get('fav').then((value) {
+  //       List<CommentModel> list = [];
+  //
+  //       list.removeWhere((element) => element.id == id);
+  //
+  //       MainCommentModel model = MainCommentModel(
+  //         data: list,
+  //       );
+  //
+  //       sl<CacheHelper>()
+  //           .put(
+  //         'fav',
+  //         model.toJson(),
+  //       )
+  //           .then((value) {
+  //         favMap.removeWhere((key, value) => key == id);
+  //
+  //         print('fav removed !!!');
+  //         emit(Comment());
+  //       });
+  //
+  //     emit(Comment());
+  //   });
+  // }
 
   Map<String, CommentModel> favMap = {};
 
-  void fillFavMap() {
-    if (favListData != null && favListData!.isNotEmpty) {
-      for (var element in favListData!) {
-        favMap.addAll({
-          element.id: element,
-        });
-      }
-
-      emit(FillCommentMapState());
-    }
-  }
-
-  void saveDisFav(String id) {
-    sl<CacheHelper>().get('disFav').then((value) {
-      if (value != null) {
-        MainCommentModel model = MainCommentModel.fromJson(value);
-
-        CommentModel commentModel = CommentModel(
-          comment: 'true',
-          id: id,
-        );
-
-        model.data.add(commentModel);
-
-        sl<CacheHelper>()
-            .put(
-          'disFav',
-          model.toJson(),
-        )
-            .then((value) {
-
-          disFavMap.addAll({
-            commentModel.id: commentModel,
-          });
-
-          print('disFav inserted !!!');
-          emit(Comment());
-        });
-      } else {
-        List<CommentModel> list = [];
-
-        CommentModel commentModel = CommentModel(
-          comment: 'true',
-          id: id,
-        );
-
-        list.add(commentModel);
-
-        MainCommentModel model = MainCommentModel(
-          data: list,
-        );
-
-        sl<CacheHelper>()
-            .put(
-          'disFav',
-          model.toJson(),
-        )
-            .then((value) {
-          disFavMap.addAll({
-            commentModel.id: commentModel,
-          });
-
-          print('disFav inserted !!!');
-          emit(Comment());
-        });
-      }
-
-      emit(Comment());
-    });
-  }
-
-  void removeDisFav(String id) {
-    sl<CacheHelper>().get('disFav').then((value) {
-      List<CommentModel> list = [];
-
-      list.removeWhere((element) => element.id == id);
-
-      MainCommentModel model = MainCommentModel(
-        data: list,
-      );
-
-      sl<CacheHelper>()
-          .put(
-        'disFav',
-        model.toJson(),
-      )
-          .then((value) {
-        disFavMap.removeWhere((key, value) => key == id);
-
-        print('disFav removed !!!');
-        emit(Comment());
-      });
-
-      emit(Comment());
-    });
-  }
+  // void fillFavMap() {
+  //   if (favListData != null && favListData!.isNotEmpty) {
+  //     for (var element in favListData!) {
+  //       favMap.addAll({
+  //         element.id: element,
+  //       });
+  //     }
+  //
+  //     emit(FillCommentMapState());
+  //   }
+  // }
+  //
+  // void saveDisFav(String id) {
+  //   sl<CacheHelper>().get('disFav').then((value) {
+  //     if (value != null) {
+  //       MainCommentModel model = MainCommentModel.fromJson(value);
+  //
+  //       CommentModel commentModel = CommentModel(
+  //         comment: 'true',
+  //         id: id,
+  //       );
+  //
+  //       model.data.add(commentModel);
+  //
+  //       sl<CacheHelper>()
+  //           .put(
+  //         'disFav',
+  //         model.toJson(),
+  //       )
+  //           .then((value) {
+  //
+  //         disFavMap.addAll({
+  //           commentModel.id: commentModel,
+  //         });
+  //
+  //         print('disFav inserted !!!');
+  //         emit(Comment());
+  //       });
+  //     } else {
+  //       List<CommentModel> list = [];
+  //
+  //       CommentModel commentModel = CommentModel(
+  //         comment: 'true',
+  //         id: id,
+  //       );
+  //
+  //       list.add(commentModel);
+  //
+  //       MainCommentModel model = MainCommentModel(
+  //         data: list,
+  //       );
+  //
+  //       sl<CacheHelper>()
+  //           .put(
+  //         'disFav',
+  //         model.toJson(),
+  //       )
+  //           .then((value) {
+  //         disFavMap.addAll({
+  //           commentModel.id: commentModel,
+  //         });
+  //
+  //         print('disFav inserted !!!');
+  //         emit(Comment());
+  //       });
+  //     }
+  //
+  //     emit(Comment());
+  //   });
+  // }
+  //
+  // void removeDisFav(String id) {
+  //   sl<CacheHelper>().get('disFav').then((value) {
+  //     List<CommentModel> list = [];
+  //
+  //     list.removeWhere((element) => element.id == id);
+  //
+  //     MainCommentModel model = MainCommentModel(
+  //       data: list,
+  //     );
+  //
+  //     sl<CacheHelper>()
+  //         .put(
+  //       'disFav',
+  //       model.toJson(),
+  //     )
+  //         .then((value) {
+  //       disFavMap.removeWhere((key, value) => key == id);
+  //
+  //       print('disFav removed !!!');
+  //       emit(Comment());
+  //     });
+  //
+  //     emit(Comment());
+  //   });
+  // }
 
   Map<String, CommentModel> disFavMap = {};
 
-  void fillDisFavMap() {
-    if (disFavListData != null && disFavListData!.isNotEmpty) {
-      for (var element in disFavListData!) {
-        disFavMap.addAll({
-          element.id: element,
-        });
-      }
-
-      emit(FillCommentMapState());
-    }
-  }
+  // void fillDisFavMap() {
+  //   if (disFavListData != null && disFavListData!.isNotEmpty) {
+  //     for (var element in disFavListData!) {
+  //       disFavMap.addAll({
+  //         element.id: element,
+  //       });
+  //     }
+  //
+  //     emit(FillCommentMapState());
+  //   }
+  // }
 
   int currentComment = -1;
 
@@ -700,6 +875,44 @@ class AppCubit extends Cubit<AppState> {
     currentCommentDirection = value;
 
     emit(ChangeCurrentCommentDirection());
+  }
+
+  List<String> requiredFields = [];
+  Map<String, TextEditingController> requiredFieldsMap = {};
+
+  void companyDomain() async {
+    emit(CompanyDomainLoading());
+
+    final result = await _repository.verifyCompanyDomain(
+      domain: companyDomainController.text,
+    );
+
+    result.fold(
+      (failure) {
+        debugPrint(failure.toString());
+        emit(
+          CompanyDomainError(
+            message: failure,
+          ),
+        );
+      },
+      (data) {
+        requiredFields = [];
+        requiredFieldsMap = {};
+
+        requiredFields = data;
+
+        for (var element in requiredFields) {
+          debugPrint(element);
+
+          requiredFieldsMap.addAll({
+            element: TextEditingController(),
+          });
+        }
+
+        emit(CompanyDomainSuccess());
+      },
+    );
   }
 //   Future<void> _createPDF() async {
 //     PdfDocument document = PdfDocument();

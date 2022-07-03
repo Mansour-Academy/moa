@@ -8,8 +8,6 @@ import 'package:moa/core/network/local/cache_helper.dart';
 import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/util/translation.dart';
 import 'package:moa/core/util/widgets/my_button.dart';
-import 'package:moa/features/login/presentation/pages/login_page.dart';
-
 import '../models/comment_model.dart';
 import 'cubit/cubit.dart';
 
@@ -70,7 +68,7 @@ void signOut(context) {
       token = null;
       // showToast(
       //     message: 'Sign out Successfully', toastStates: ToastStates.SUCCESS);
-      navigateAndFinish(context, const LoginPage());
+      //navigateAndFinish(context, const LoginPage());
     }
   });
 }

@@ -8,15 +8,12 @@ import 'package:moa/core/di/injection.dart';
 import 'package:moa/core/util/bloc_observer.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/cubit/state.dart';
-import 'package:moa/features/login/presentation/pages/login_page.dart';
-import 'package:moa/features/my_requests/presentation/pages/my_requests_page.dart';
+import 'package:moa/features/register/presentation/pages/register_page.dart';
 import 'package:moa/features/test/presentation/pages/test_page.dart';
-
-import 'core/models/comment_model.dart';
 import 'core/network/local/cache_helper.dart';
 import 'core/network/remote/api_endpoints.dart';
 import 'core/util/constants.dart';
-import 'features/start/presentation/pages/start_page.dart';
+import 'features/login/presentation/pages/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +30,7 @@ void main() async {
     // name: 'New App',
   );
 
-  Bloc.observer = MyBlocObserver();
+  // Bloc.observer = MyBlocObserver();
 
   await di.init();
 
@@ -76,30 +73,30 @@ void main() async {
   // sl<CacheHelper>().clear('comments');
   // sl<CacheHelper>().clear('fav');
 
-  sl<CacheHelper>().get('comments').then((value) {
-    print('comments ---------------------------- $value');
+  // sl<CacheHelper>().get('comments').then((value) {
+  //   print('comments ---------------------------- $value');
+  //
+  //   if(value != null) {
+  //     commentsListData = MainCommentModel.fromJson(value).data;
+  //
+  //   }
+  // });
 
-    if(value != null) {
-      commentsListData = MainCommentModel.fromJson(value).data;
-
-    }
-  });
-
-  sl<CacheHelper>().get('fav').then((value) {
-    print('fav ---------------------------- $value');
-
-    if(value != null) {
-      favListData = MainCommentModel.fromJson(value).data;
-    }
-  });
-
-  sl<CacheHelper>().get('disFav').then((value) {
-    print('disFav ---------------------------- $value');
-
-    if(value != null) {
-      disFavListData = MainCommentModel.fromJson(value).data;
-    }
-  });
+  // sl<CacheHelper>().get('fav').then((value) {
+  //   print('fav ---------------------------- $value');
+  //
+  //   if(value != null) {
+  //     favListData = MainCommentModel.fromJson(value).data;
+  //   }
+  // });
+  //
+  // sl<CacheHelper>().get('disFav').then((value) {
+  //   print('disFav ---------------------------- $value');
+  //
+  //   if(value != null) {
+  //     disFavListData = MainCommentModel.fromJson(value).data;
+  //   }
+  // });
 
   String t2 = 'بِسْمِ اللَِّهِ الرَّحْمَٰنِ الرَّحِيمِ محمد';
   String t3 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
@@ -225,18 +222,19 @@ class MyApp extends StatelessWidget {
             )
             ..setTranslation(
               translation: translation,
-            )..fillCommentMap()..fillFavMap()..fillDisFavMap(),
+            ),
         ),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, state) {
           return MaterialApp(
-            title: 'MOA',
+            title: 'Posts',
             debugShowCheckedModeBanner: false,
             themeMode: ThemeMode.light,
             theme: AppCubit.get(context).lightTheme,
-            home: const TestPage(),
-            // home: token != null ? const StartPage() : const LoginPage(),
+            // home: const TestPage(),
+            home: const RegisterPage(),
+            // home: token != null ? const TestPage() : const RegisterPage(),
           );
         },
       ),
