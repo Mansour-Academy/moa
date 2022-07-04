@@ -16,8 +16,13 @@ import 'core/network/remote/api_endpoints.dart';
 import 'core/util/constants.dart';
 import 'features/start/presentation/pages/start_page.dart';
 
+import 'package:permission_handler/permission_handler.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Permission.camera.request();
+  await Permission.microphone.request(); // if you need microphone permission
 
   Bloc.observer = MyBlocObserver();
 
