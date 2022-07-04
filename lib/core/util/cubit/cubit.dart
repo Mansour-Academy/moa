@@ -543,6 +543,9 @@ class AppCubit extends Cubit<AppState> {
 
   void getPosts() async {
     if (token!.isNotEmpty) {
+      textEditingController.clear();
+      posts = [];
+
       emit(AllPostsLoading());
 
       final result = await _repository.getPosts();
@@ -560,6 +563,34 @@ class AppCubit extends Cubit<AppState> {
           posts = data;
 
           emit(AllPostsSuccess());
+        },
+      );
+    }
+  }
+
+  void getSearchPosts() async {
+    if (token!.isNotEmpty) {
+      posts = [];
+
+      emit(AllSearchPostsLoading());
+
+      final result = await _repository.getSearchPosts(
+        text: textEditingController.text,
+      );
+
+      result.fold(
+            (failure) {
+          debugPrint(failure.toString());
+          emit(
+            AllSearchPostsError(
+              message: failure,
+            ),
+          );
+        },
+            (data) {
+          posts = data;
+
+          emit(AllSearchPostsSuccess());
         },
       );
     }

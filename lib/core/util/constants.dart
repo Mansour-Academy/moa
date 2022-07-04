@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:moa/core/di/injection.dart';
 import 'package:moa/core/network/local/cache_helper.dart';
 import 'package:moa/core/network/remote/api_endpoints.dart';
@@ -60,6 +61,11 @@ String getTranslatedText({
     return ar;
   }
   return en;
+}
+
+String utcToLocal(String date) {
+  DateTime dateTime = DateTime.parse(date).toLocal();
+  return DateFormat.yMMMMd().add_jm().format(dateTime);
 }
 
 void signOut(context) {

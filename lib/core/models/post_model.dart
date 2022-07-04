@@ -1,4 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:moa/core/models/comment_model.dart';
+import 'package:moa/core/models/user_model.dart';
 import 'package:moa/core/network/remote/api_endpoints.dart';
 
 class PostModel {
@@ -14,6 +16,7 @@ class PostModel {
   List<CommentModel> comments;
   final List<PostMediaModel> postMedias;
   final PostStatisticsModel statistics;
+  final UserModel user;
 
   PostModel({
     required this.id,
@@ -28,6 +31,7 @@ class PostModel {
     required this.canShare,
     required this.statistics,
     required this.postMedias,
+    required this.user,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -48,6 +52,7 @@ class PostModel {
       dislike: json['dislike'] ?? false,
       canShare: json['canShare'] ?? false,
       statistics: PostStatisticsModel.fromJson(json['statistics']),
+      user: UserModel.fromJson(json['user']),
     );
   }
 }

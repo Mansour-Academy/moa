@@ -14,5 +14,7 @@ const String sharePostUrl = 'Post/Share';
 const String commentUrl = 'Post/Comment';
 const String shareUrl = 'Post/Share';
 
+const String searchUrl = 'Post/Search';
+
 String? token = '';
 String? companyName = '';

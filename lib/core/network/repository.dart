@@ -29,6 +29,10 @@ abstract class Repository {
 
   Future<Either<String, List<PostModel>>> getPosts();
 
+  Future<Either<String, List<PostModel>>> getSearchPosts({
+    required String text,
+  });
+
   Future<Either<String, SimpleModel>> like({
     required int postId,
   });
@@ -388,6 +392,42 @@ class RepoImplementation extends Repository {
       onSuccess: () async {
         final Response f = await dioHelper.get(
           url: getPostsUrl,
+          token: token,
+        );
+
+        List<PostModel> requests = [];
+        f.data.forEach((e) {
+          requests.add(PostModel.fromJson(e));
+        });
+
+        // Iterable l = json.decode(f.data);
+        // List<AllRequestsDataModel> requests = List<AllRequestsDataModel>.from(
+        //     l.map((model) => AllRequestsDataModel.fromJson(model)));
+
+        return requests;
+      },
+      onServerError: (exception) async {
+        debugPrint(exception.message);
+        debugPrint(exception.code.toString());
+        debugPrint(exception.error);
+        // final f = exception.error;
+        // final msg = _handleErrorMessages(f: f['message'],);
+        return exception.message;
+      },
+    );
+  }
+
+  @override
+  Future<Either<String, List<PostModel>>> getSearchPosts({
+    required String text,
+  }) async {
+    return _basicErrorHandling<List<PostModel>>(
+      onSuccess: () async {
+        final Response f = await dioHelper.get(
+          url: searchUrl,
+          query: {
+            'text': text,
+          },
           token: token,
         );
 

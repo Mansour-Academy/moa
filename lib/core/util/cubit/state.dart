@@ -77,6 +77,18 @@ class AllPostsError extends AppState {
   });
 }
 
+class AllSearchPostsLoading extends AppState {}
+
+class AllSearchPostsSuccess extends AppState {}
+
+class AllSearchPostsError extends AppState {
+  final String message;
+
+  AllSearchPostsError({
+    required this.message,
+  });
+}
+
 class MessageReceived extends AppState {}
 
 class Search extends AppState {}

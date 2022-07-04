@@ -6,6 +6,7 @@ import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/widgets/hide_keyboard_page.dart';
 import 'package:moa/core/util/widgets/main_scaffold.dart';
+import 'package:moa/features/test/presentation/pages/search_page.dart';
 
 import '../../../../core/util/cubit/state.dart';
 import '../widgets/test_widget.dart';
@@ -37,7 +38,7 @@ class _TestPageState extends State<TestPage> {
           actions: [
             IconButton(
               onPressed: () {
-                //navigateTo(context, const SearchPage(),);
+                navigateTo(context, const SearchPage(),);
               },
               icon: const Icon(
                 FontAwesomeIcons.search,
