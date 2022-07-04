@@ -28,7 +28,10 @@ class LoginWidget extends StatelessWidget {
 
         if(state is UserLoginSuccess) {
           sl<CacheHelper>().put('token', state.token);
+          sl<CacheHelper>().put('companyName', state.companyName);
           token = state.token;
+          companyName = state.companyName;
+
           navigateAndFinish(context, const TestPage());
         }
       },

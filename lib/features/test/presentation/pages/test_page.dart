@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:moa/core/network/remote/api_endpoints.dart';
 import 'package:moa/core/util/constants.dart';
 import 'package:moa/core/util/cubit/cubit.dart';
 import 'package:moa/core/util/widgets/hide_keyboard_page.dart';
@@ -30,8 +31,8 @@ class _TestPageState extends State<TestPage> {
       scaffold: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red.shade900,
-          title: const Text(
-            'Company',
+          title: Text(
+            companyName!,
           ),
           actions: [
             IconButton(

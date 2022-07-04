@@ -15,3 +15,4 @@ const String commentUrl = 'Post/Comment';
 const String shareUrl = 'Post/Share';
 
 String? token = '';
+String? companyName = '';

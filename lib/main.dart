@@ -51,6 +51,7 @@ void main() async {
       .loadString('assets/translations/${isRtl ? 'ar' : 'en'}.json');
 
   token = await sl<CacheHelper>().get('token');
+  companyName = await sl<CacheHelper>().get('companyName');
 
   debugPrintFullText('My Current Token => $token');
 

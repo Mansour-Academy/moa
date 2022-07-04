@@ -242,6 +242,7 @@ class AppCubit extends Cubit<AppState> {
 
           emit(UserLoginSuccess(
             token: loginModel!.token,
+            companyName: loginModel!.companyName,
           ));
         },
       );

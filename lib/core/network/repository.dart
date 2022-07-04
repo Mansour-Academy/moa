@@ -260,7 +260,7 @@ class RepoImplementation extends Repository {
         final Response f = await dioHelper.post(
           url: sharePostUrl,
           token: token,
-          query: {
+          data: {
             'postId': postId,
             'source': source,
           },

@@ -215,11 +215,16 @@ class _TestWidgetState extends State<TestWidget> {
                               Directionality(
                                 textDirection: TextDirection.ltr,
                                 child: Text(
-                                  intl.DateFormat("yyyy-MM-dd")
-                                      .parse(AppCubit.get(context)
-                                          .posts[index]
-                                          .createdOn)
-                                      .toString(),
+                                  AppCubit.get(context)
+                                      .posts[index]
+                                      .createdOn,
+                                  // intl.DateFormat("yyyy-MM-dd")
+                                  //     .parse(
+                                  //       AppCubit.get(context)
+                                  //           .posts[index]
+                                  //           .createdOn,
+                                  //     )
+                                  //     .toString(),
                                   style: GoogleFonts.lato(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 10.0,
@@ -590,10 +595,10 @@ class _TestWidgetState extends State<TestWidget> {
                                                 i++) {
                                               final img = await imageFromURL(
                                                   'temp$i',
-                                                      AppCubit.get(context)
-                                                          .posts[index]
-                                                          .postMedias[i]
-                                                          .mediaPath);
+                                                  AppCubit.get(context)
+                                                      .posts[index]
+                                                      .postMedias[i]
+                                                      .mediaPath);
 
                                               paths.add(img!.path);
                                             }
@@ -842,108 +847,116 @@ class _TestWidgetState extends State<TestWidget> {
                             .posts[index]
                             .comments
                             .isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 16.0,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  radius: 12.0,
-                                  backgroundColor: Colors.red.shade900,
-                                  child: Text(
-                                    'C',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(
-                                          color: whiteColor,
-                                          height: 1.3,
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, cIndex) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8.0,
+                                horizontal: 16.0,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 12.0,
+                                    backgroundColor: Colors.red.shade900,
+                                    child: Text(
+                                      'C',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .copyWith(
+                                            color: whiteColor,
+                                            height: 1.3,
+                                          ),
+                                    ),
+                                  ),
+                                  space10Horizontal(context),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        // for(int i = 0; i < AppCubit
+                                        //     .get(context)
+                                        //     .commentMap[AppCubit
+                                        //     .get(context)
+                                        //     .posts[index]
+                                        //     .id]!.length; i++)
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[100],
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  10.0,
+                                                ),
+                                                border: Border.all(
+                                                  width: 1.0,
+                                                  color: HexColor(regularGrey),
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: SelectableText(
+                                                  AppCubit.get(context)
+                                                      .posts[index]
+                                                      .comments[cIndex]
+                                                      .comment,
+                                                  textDirection: normalise(
+                                                              AppCubit.get(
+                                                                      context)
+                                                                  .posts[index]
+                                                                  .comments[
+                                                                      cIndex]
+                                                                  .comment
+                                                                  .characters
+                                                                  .first)
+                                                          .contains(RegExp(
+                                                              r'[\u0600-\u06FF]'))
+                                                      ? TextDirection.rtl
+                                                      : TextDirection.ltr,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2!
+                                                      .copyWith(
+                                                        height: 1.2,
+                                                      ),
+                                                ),
+                                              ),
+                                            ),
+                                            space4Vertical(context),
+                                            Text(
+                                              AppCubit.get(context)
+                                                  .posts[index]
+                                                  .comments[cIndex]
+                                                  .createdOn,
+                                              textDirection: TextDirection.ltr,
+                                              style: GoogleFonts.lato(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 10.0,
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
+                                            space4Vertical(context),
+                                          ],
                                         ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                space10Horizontal(context),
-                                Expanded(
-                                  child: Column(
-                                    children: [
-                                      // for(int i = 0; i < AppCubit
-                                      //     .get(context)
-                                      //     .commentMap[AppCubit
-                                      //     .get(context)
-                                      //     .posts[index]
-                                      //     .id]!.length; i++)
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[100],
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.0,
-                                              ),
-                                              border: Border.all(
-                                                width: 1.0,
-                                                color: HexColor(regularGrey),
-                                              ),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: SelectableText(
-                                                AppCubit.get(context)
-                                                    .posts[index]
-                                                    .comments
-                                                    .last
-                                                    .comment,
-                                                textDirection: normalise(
-                                                            AppCubit.get(
-                                                                    context)
-                                                                .posts[index]
-                                                                .comments
-                                                                .last
-                                                                .comment
-                                                                .characters
-                                                                .first)
-                                                        .contains(RegExp(
-                                                            r'[\u0600-\u06FF]'))
-                                                    ? TextDirection.rtl
-                                                    : TextDirection.ltr,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle2!
-                                                    .copyWith(
-                                                      height: 1.2,
-                                                    ),
-                                              ),
-                                            ),
-                                          ),
-                                          space4Vertical(context),
-                                          Text(
-                                            AppCubit.get(context)
-                                                .posts[index]
-                                                .comments
-                                                .last
-                                                .createdOn,
-                                            textDirection: TextDirection.ltr,
-                                            style: GoogleFonts.lato(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 10.0,
-                                              color: Colors.grey[500],
-                                            ),
-                                          ),
-                                          space4Vertical(context),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            // separatorBuilder: (context, index) =>
+                            //     space4Vertical(context),
+                            itemCount: AppCubit.get(context)
+                                .posts[index]
+                                .comments
+                                .length,
                           ),
                         // if (AppCubit.get(context).commentMap[
                         //         AppCubit.get(context).posts[index].id] !=

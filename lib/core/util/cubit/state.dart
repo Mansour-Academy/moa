@@ -19,9 +19,11 @@ class UserLoginLoading extends AppState {}
 
 class UserLoginSuccess extends AppState {
   final String token;
+  final String companyName;
 
   UserLoginSuccess({
     required this.token,
+    required this.companyName,
   });
 }
 
