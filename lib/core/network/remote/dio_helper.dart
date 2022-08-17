@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -51,6 +54,13 @@ class DioImpl extends DioHelper {
     int? timeOut,
     bool isMultipart = false,
   }) async {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
     if (timeOut != null) {
       dio.options.connectTimeout = timeOut;
     }
@@ -105,6 +115,13 @@ class DioImpl extends DioHelper {
     int? timeOut,
     bool isMultipart = false,
   }) async {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
     if (timeOut != null) {
       dio.options.connectTimeout = timeOut;
     }
