@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -188,9 +189,12 @@ class AppCubit extends Cubit<AppState> {
   void userLogin() async {
     emit(UserLoginLoading());
 
+    String? token = await FirebaseMessaging.instance.getToken();
+
     final result = await _repository.login(
       email: loginEmailController.text,
       password: loginPasswordController.text,
+      token: token,
     );
 
     result.fold(
@@ -229,7 +233,7 @@ class AppCubit extends Cubit<AppState> {
       (data) {
         governmentsList = data;
 
-        selectedGovernment = governmentsList[0];
+        selectedGovernment = governmentsList[1];
 
         emit(GetAllGovernmentsSuccess());
       },
@@ -262,8 +266,15 @@ class AppCubit extends Cubit<AppState> {
       },
       (data) {
         registerModel = data;
-
-        emit(UserRegisterSuccess());
+        if(registerModel!.isSuccess) {
+          emit(UserRegisterSuccess());
+        } else {
+          emit(
+            UserRegisterError(
+              message: registerModel!.message,
+            ),
+          );
+        }
       },
     );
   }

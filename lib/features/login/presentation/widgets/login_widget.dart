@@ -65,6 +65,9 @@ class LoginWidget extends StatelessWidget {
                     ),
                     space40Vertical(context),
                     MyForm(
+                      isValid: (value) {
+                        return true;
+                      },
                       isPassword: false,
                       type: TextInputType.emailAddress,
                       error: appTranslation(context).emailAddressError,
@@ -73,6 +76,9 @@ class LoginWidget extends StatelessWidget {
                     ),
                     space8Vertical(context),
                     MyForm(
+                      isValid: (value) {
+                        return true;
+                      },
                       isPassword: true,
                       type: TextInputType.visiblePassword,
                       error: appTranslation(context).passwordError,

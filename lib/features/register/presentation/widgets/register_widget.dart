@@ -101,6 +101,9 @@ class RegisterWidget extends StatelessWidget {
                       ),
                       space40Vertical(context),
                       MyForm(
+                        isValid: (value) {
+                          return true;
+                        },
                         isPassword: false,
                         type: TextInputType.name,
                         error: appTranslation(context).fullNameError,
@@ -112,12 +115,21 @@ class RegisterWidget extends StatelessWidget {
                       MyForm(
                         isPassword: false,
                         type: TextInputType.number,
+                        isValid: (value) {
+                          return value.length == 14;
+                        },
                         error: appTranslation(context).nationalIdError,
                         controller: AppCubit.get(context).registerIdController,
                         label: appTranslation(context).nationalId,
                       ),
                       space8Vertical(context),
                       MyForm(
+                        isValid: (value) {
+                          return value.length == 11 && (value.startsWith('011') ||
+                              value.startsWith('010') ||
+                              value.startsWith('012') ||
+                              value.startsWith('015')) && int.tryParse(value) != null;
+                        },
                         isPassword: false,
                         type: TextInputType.phone,
                         error: appTranslation(context).mobileNumberError,
@@ -127,6 +139,9 @@ class RegisterWidget extends StatelessWidget {
                       ),
                       space8Vertical(context),
                       MyForm(
+                        isValid: (value) {
+                          return true;
+                        },
                         isPassword: false,
                         type: TextInputType.text,
                         error: appTranslation(context).addressError,
@@ -136,6 +151,9 @@ class RegisterWidget extends StatelessWidget {
                       ),
                       space8Vertical(context),
                       MyForm(
+                        isValid: (value) {
+                          return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                        },
                         isPassword: false,
                         type: TextInputType.emailAddress,
                         error: appTranslation(context).emailAddressError,
@@ -199,6 +217,9 @@ class RegisterWidget extends StatelessWidget {
                       ),
                       space8Vertical(context),
                       MyForm(
+                        isValid: (value) {
+                          return true;
+                        },
                         isPassword: true,
                         type: TextInputType.visiblePassword,
                         error: appTranslation(context).passwordError,
@@ -208,6 +229,9 @@ class RegisterWidget extends StatelessWidget {
                       ),
                       space8Vertical(context),
                       MyForm(
+                        isValid: (value) {
+                          return value == AppCubit.get(context).registerPasswordController.text;
+                        },
                         isPassword: true,
                         type: TextInputType.visiblePassword,
                         error: appTranslation(context).confirmPasswordError,

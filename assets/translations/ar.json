@@ -2,7 +2,7 @@
   "loginHead": "تسجيل الدخول",
   "emailAddress": "البريد الإلكتروني",
   "password": "كلمة المرور",
-  "emailAddressError": "من فضلك أدخل البريد الإلكتروني الخاص بك",
+  "emailAddressError": "البريد الإلكتروني غير صحيح",
   "passwordError": "من فضلك أدخل كلمة المرور الخاصة بحسابك",
   "donNotHaveAccount": "ليس لديك حساب؟",
   "registerNow": "سجل حساب الآن",
@@ -15,10 +15,10 @@
   "confirmPassword": "تأكيد كلمة المرور",
 
   "fullNameError": "من فضلك أدخل اسمك بالكامل",
-  "nationalIdError": "من فضلك أدخل رقمك القومى",
-  "mobileNumberError": "من فضلك أدخل رقم الموبايل الخاص بك ",
+    "nationalIdError": "رقمك القومي يجب أن يكون 14 رقم",
+  "mobileNumberError": "رقم الموبايل يجب أن يكون 11 رقم و يبدأ بـ 010 أو 011 أو 012 أو 015",
   "addressError": "من فضلك أدخل عنوانك",
-  "confirmPasswordError": "من فضلك أدخل أعد إدخال كلمة المرور للتأكيد",
+  "confirmPasswordError": "كلمة المرور غير متطابقة",
 
   "myRequests": "طلباتى",
   "orderNumber": "رقم الطلب",

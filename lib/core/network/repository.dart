@@ -17,6 +17,7 @@ abstract class Repository {
   Future<Either<String, LoginModel>> login({
     required String email,
     required String password,
+    String? token,
   });
 
   Future<Either<String, List<GovernmentModel>>> getAllGovernments();
@@ -48,14 +49,16 @@ class RepoImplementation extends Repository {
   Future<Either<String, LoginModel>> login({
     required String email,
     required String password,
+    String? token,
   }) async {
     return _basicErrorHandling<LoginModel>(
       onSuccess: () async {
         final Response f = await dioHelper.post(
           url: loginUrl,
-          data: {
-            'email': email,
-            'password': password,
+          query: {
+            'Email': email,
+            'Password': password,
+            'DeviceToken': token??'1234',
           },
         );
 

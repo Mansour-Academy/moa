@@ -10,6 +10,7 @@ class MyForm extends StatefulWidget {
   final TextInputType type;
   final String error;
   final bool isPassword;
+  final bool Function(String value) isValid;
 
   const MyForm({
     Key? key,
@@ -18,6 +19,7 @@ class MyForm extends StatefulWidget {
     required this.type,
     required this.error,
     required this.isPassword,
+    required this.isValid,
   }) : super(key: key);
 
   @override
@@ -45,11 +47,14 @@ class _MyFormState extends State<MyForm> {
               ),
           keyboardType: widget.type,
           validator: (value) {
-            if (value!.isEmpty) {
+            if (value!.isEmpty || !widget.isValid(value)) {
               return widget.error;
             }
 
             return null;
+          },
+          onSaved: (value) {
+            widget.controller.text = value!;
           },
           decoration: InputDecoration(
             suffixIcon: widget.isPassword ? IconButton(
@@ -112,6 +117,7 @@ class _MyFormState extends State<MyForm> {
                 width: 1.0,
               ),
             ),
+            errorMaxLines: 2,
             filled: true,
             fillColor: whiteColor,
           ),
